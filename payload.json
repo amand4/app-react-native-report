@@ -1,0 +1,256 @@
+{ 
+    "LaudoVeicular": {
+      "Type": "Veiculo",
+      "Data": {
+        "Cabecalho": {
+          "Rep": 432423,
+          "NrdoOficio": 1,
+          "Secao": 2,
+          "Diretor": 1,
+          "Cidade": 4,
+          "Perito": 1,
+          "NaturezaDoExame": 3,
+          "TipoDeInquerito": 1,
+          "OrgaoSolicitante": 2,
+          "DataDeDesignacao": "2021-03-04 00:33:20",
+          "DataDeSolicitacao": "2021-03-04 00:33:20"
+        },
+        "Veiculo": {
+          "Type": "Moto",
+          "Data": {
+            "Placa": "AAA-1234",
+            "Modelo": 1,
+            "AnoModeloFab": "Corsa",
+            "Cor": "azul",
+            "EstadoDeConservacao": 1
+          },
+          "Pieces": [
+            {
+              "Type": "Motor",
+              "Data": {
+                "Integro": {
+                  "Chassi": {
+                    "Numero": "12345",
+                    "Imagens": ["img4.jpg", "img5.jpg", "img6.jpg"]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Integro": {
+                  "Chassi": {
+                    "Numero": "12345",
+                    "Imagens": ["img1.jpg", "img2.jpg", "img3.jpg"]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Adulterado": {
+                  "Type": "Desbaste",
+                  "Data": {
+                    "DestruicaoTotal": true,
+                    "MetodoDeDestruicao": 1,
+                    "NumeracaoIdentificadora": [
+                      {
+                        "Type": "Adulterado",
+                        "Data": {
+                          "Numero": "423423",
+                          "Imagens": [
+                            "chassiAdulterado1.jpg",
+                            "chassiAdulterado2.jpg",
+                            "chassiAdulterado3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "Original",
+                        "Data": {
+                          "Numero": "99999",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Adulterado": {
+                  "Type": "Implante",
+                  "Data": {
+                    "DestruicaoTotal": true,
+                    "MetodoDeDestruicao": 1,
+                    "NumeracaoIdentificadora": [
+                      {
+                        "Type": "Adulterado",
+                        "Data": {
+                          "Numero": "12343",
+                          "Imagens": [
+                            "chassiAdulterado1.jpg",
+                            "chassiAdulterado2.jpg",
+                            "chassiAdulterado3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "Original",
+                        "Data": {
+                          "Numero": "89765",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "GravacaoDivergente",
+                        "Data": {
+                          "Numero": "3654",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "GravacaoAutorizada",
+                        "Data": {
+                          "Numero": "096435",
+                          "Imagens": [
+                            "GravacaoAutorizada1.jpg",
+                            "cGravacaoAutorizada2.jpg",
+                            "GravacaoAutorizada3.jpg"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Adulterado": {
+                  "Type": "Destruicao",
+                  "Data": {
+                    "DestruicaoTotal": true,
+                    "MetodoDeDestruicao": 1,
+                    "NumeracaoIdentificadora": [
+                      {
+                        "Type": "Adulterado",
+                        "Data": {
+                          "Numero": "423423",
+                          "Imagens": [
+                            "chassiAdulterado1.jpg",
+                            "chassiAdulterado2.jpg",
+                            "chassiAdulterado3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "Original",
+                        "Data": {
+                          "Numero": "99999",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Adulterado": {
+                  "Type": "Transplante",
+                  "Data": {
+                    "DestruicaoTotal": true,
+                    "MetodoDeDestruicao": 1,
+                    "NumeracaoIdentificadora": [
+                      {
+                        "Type": "Adulterado",
+                        "Data": {
+                          "Numero": "423423",
+                          "Imagens": [
+                            "chassiAdulterado1.jpg",
+                            "chassiAdulterado2.jpg",
+                            "chassiAdulterado3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "Original",
+                        "Data": {
+                          "Numero": "99999",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Type": "Chassi",
+              "Data": {
+                "Adulterado": {
+                  "Type": "Regravacao",
+                  "Data": {
+                    "DestruicaoTotal": true,
+                    "MetodoDeDestruicao": 1,
+                    "NumeracaoIdentificadora": [
+                      {
+                        "Type": "Adulterado",
+                        "Data": {
+                          "Numero": "423423",
+                          "Imagens": [
+                            "chassiAdulterado1.jpg",
+                            "chassiAdulterado2.jpg",
+                            "chassiAdulterado3.jpg"
+                          ]
+                        }
+                      },
+                      {
+                        "Type": "Original",
+                        "Data": {
+                          "Numero": "99999",
+                          "Imagens": [
+                            "chassiOriginal1.jpg",
+                            "chassiOriginal2.jpg",
+                            "chassiOriginal3.jpg"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }

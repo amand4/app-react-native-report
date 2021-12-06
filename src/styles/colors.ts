@@ -1,0 +1,26 @@
+export default {
+  blue: '#568FA6',
+  blue_dark: '#568FA6',
+  blue_light: '#3EC5CC',
+  pupple: "#5E72E4",
+  heading: '#F2EB88',
+  text: '#2F3C51',
+  body_dark: '#738078',
+  body_light: '#AAB2AD',
+
+  formHeading: '#2F3C51',
+  gray_dark: "#E9ECEF",
+  background: '#FFFFFF',
+  shape: '#F8F8F8',
+  white: '#FFFFFF',
+  gray: '#CFCFCF',
+  black: 'black',
+  gray_light: "#8898AA",
+  yellow: '#32B768',
+  yellow_dark: '#BFAF5E',
+  yellow_light: '#F2EB88',
+  green_light: "#2DCE89",
+  outline: 'rgba(0, 0, 0, 0.1)',
+  red: '#E83F5B',
+};
+ 
