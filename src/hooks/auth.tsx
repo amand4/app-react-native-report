@@ -10,7 +10,7 @@ import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import useAsyncStorage from "@react-native-async-storage/async-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import actions from '../actions/todo';
+import actions from "../actions/todo";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -67,16 +67,16 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signIn(name: string, password: string): Promise<void> {
     try {
       // trocar pelos parametro da funçao, apenas testes
-
       const response = await api.post<Response>("/login", {
         name,
         password,
       });
       if (response.data.user) {
         setUser(response.data.user);
-        dispatch(actions.addExpert(Number(response.data.user.id)))
+        dispatch(actions.addExpert(Number(response.data.user.id)));
 
         api.defaults.headers["Authorization"] = `Bearer ${response.data.token}`;
+
         await useAsyncStorage.setItem(
           userStorageKey,
           JSON.stringify(response.data.user)
@@ -87,13 +87,15 @@ function AuthProvider({ children }: AuthProviderProps) {
         );
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(
+        "Usário ou senha inválida! Tente novamente com outras credênciais"
+      );
     }
   }
 
   async function signOut() {
     setUser({} as User);
-    await AsyncStorage.removeItem(userStorageKey).then(() => { });
+    await AsyncStorage.removeItem(userStorageKey).then(() => {});
   }
 
   return (

@@ -31,14 +31,11 @@ import { formatDate } from "../../../../utils";
 import { maskRep } from "../../../../utils/maks";
 import { useDispatch, useSelector } from "react-redux";
 
-import actions from '../../../../actions/todo';
-
+import actions from "../../../../actions/todo";
 
 import type { RootState } from "../../../../store/index";
 
-
-export function StepOneGeneralInformation(
-) {
+export function StepOneGeneralInformation() {
   const [showDateDesig, setShowDateDesignacao] = useState(false);
   const [showDateSolit, setShowSolitacao] = useState(false);
   const [valid, setValid] = useState(false);
@@ -56,7 +53,7 @@ export function StepOneGeneralInformation(
   const [city, setCity] = useState(0);
   const [director, setDirector] = useState(0);
   const [section, setSection] = useState(0);
-  const [expert, setExpert] = useState(0);
+  const [expert, setExpert] = useState(user.id);
   const [examNature, setExamNature] = useState(0);
   const [dateDesignation, setDateDesignation] = useState(new Date());
   const [dateRequest, setDateRequest] = useState(new Date());
@@ -64,12 +61,6 @@ export function StepOneGeneralInformation(
 
   const dispatch = useDispatch();
 
-
-
-  // const [brushSize, setBrushSize] = React.useState([options?.brushSize || 50]);
-  // const [brushStrength, setBrushStrength] = React.useState([
-  //   options?.brushStrength || 50,
-  // ]);
   const repIsValid = () => {
     return false;
   };
@@ -78,31 +69,25 @@ export function StepOneGeneralInformation(
     return false;
   };
 
-  const indiciadoIsValid = () => {
-  };
+  const indiciadoIsValid = () => {};
 
-
-  const tipoDeInqueritoIsValid = () => { };
+  const tipoDeInqueritoIsValid = () => {};
 
   const nrdoInqueritoIsValid = () => {
     // // return data.NrdoInquerito.length <= 2 && data.NrdoInquerito.length > 0;
   };
 
-  const cidadeIsValid = () => { };
+  const cidadeIsValid = () => {};
 
-  const orgaoIsValid = () => {
-  };
-
+  const orgaoIsValid = () => {};
 
   const diretorIsValid = () => {
     // return data.Diretor === 0;
   };
 
-
   const naturezaDoExameIsValid = () => {
     // return data.NaturezaDoExame === 0;
   };
-
 
   const secaoIsValid = () => {
     // return data.Secao === 0;
@@ -116,8 +101,8 @@ export function StepOneGeneralInformation(
   };
 
   const isValid = () => {
-    return false
-  }
+    return false;
+  };
 
   return (
     <TouchableNativeFeedback onPress={Keyboard.dismiss}>
@@ -128,13 +113,13 @@ export function StepOneGeneralInformation(
           errorMessage={"Erro: o formato deve ser: Rep (xxxx/yyyy)"}
           value={rep}
           onChangeText={(value) => {
-            const teste = Number(value)
+            const teste = Number(value);
             setRep(teste);
             dispatch(actions.addRep(teste));
-
           }}
           defaultValue={rep}
           testID="input-rep"
+          keyboardType="numeric"
         />
 
         <Input
@@ -142,10 +127,9 @@ export function StepOneGeneralInformation(
           errorMessage={"Erro: o número do Ofício é obrigatório"}
           error={oficioIsValid()}
           onChangeText={(value) => {
-            const teste = Number(value)
+            const teste = Number(value);
             setNumberOffice(teste);
             dispatch(actions.addNumberOffice(teste));
-
           }}
           value={numberOffice}
           keyboardType="numeric"
@@ -157,18 +141,16 @@ export function StepOneGeneralInformation(
           // error={indiciadoIsValid()}
           autoCapitalize={"words"}
           onChangeText={(value) => {
-            setInitiated(value)
+            setInitiated(value);
             dispatch(actions.addInitiated(value));
-
           }}
           value={initiated}
         />
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setTypeOfInquiry(index)
+            setTypeOfInquiry(index);
             dispatch(actions.addTypeOfInquiry(index));
-
           }}
           options={typeInquerisOptions}
           value={typeOfInquiry}
@@ -183,8 +165,8 @@ export function StepOneGeneralInformation(
           // error={nrdoInqueritoIsValid()}
           errorMessage={"Erro: preencha o número do Inquerito"}
           onChangeText={(value) => {
-            setNumberInquiry(value)
-            dispatch(actions.addNumberInquiry(value));
+            setNumberInquiry(value);
+            dispatch(actions.addNumberInquiry(Number(value)));
 
             // setInquerito(value);
           }}
@@ -194,16 +176,14 @@ export function StepOneGeneralInformation(
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setCity(index)
+            setCity(index);
             dispatch(actions.addCity(index));
-
           }}
           options={cities}
           value={city}
           //  error={cidadeIsValid()}
           errorMessage={"Erro: Selecione uma Cidade"}
           testID="select-city"
-
         />
 
         <Input
@@ -221,21 +201,19 @@ export function StepOneGeneralInformation(
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setSection(index)
+            setSection(index);
             dispatch(actions.addSection(index));
-
           }}
           options={secao}
           value={section}
           //error={secaoIsValid()}
           errorMessage={"Erro: Selecione uma Seção"}
           testID="select-section"
-
         />
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setExamNature(index)
+            setExamNature(index);
             dispatch(actions.addExamNature(index));
           }}
           options={naturezaExame}
@@ -243,35 +221,30 @@ export function StepOneGeneralInformation(
           // error={naturezaDoExameIsValid()}
           errorMessage={"Erro: Selecione a Natureza de Exame"}
           testID="select-natureExam"
-
         />
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setRequestingAgency(index)
+            setRequestingAgency(index);
             dispatch(actions.addRequestingAgency(index));
-
           }}
           options={orgaoSolicitanteOptions}
           value={requestingAgency}
           // error={orgaoIsValid()}
           errorMessage={"Erro: Selecione um Órgão Solicitante"}
           testID="select-typeRequestingAgency"
-
         />
 
         <Select
           onValueChange={(selectedValue, index) => {
-            setDirector(index)
+            setDirector(index);
             dispatch(actions.addDirector(index));
-
           }}
           options={directorsOptions}
           value={director}
           // error={diretorIsValid()}
           errorMessage={"Erro: Selecione um Diretor"}
           testID="select-director"
-
         />
         {/* <View style={styles.containerData}>
           <RectButton style={styles.button} onPress={showSolicitanteDatepicker}>

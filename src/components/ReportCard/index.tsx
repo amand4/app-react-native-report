@@ -1,24 +1,21 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-import {
-  AntDesign,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import styles from "./styles";
 
 export interface ReportCardData {
   LaudoVeicular: {
-    id: string,
+    id: string;
     Type: string;
     Data: {
       Cabecalho: {
-        Rep: string;
-        NrdoOficio: string;
+        Rep: number;
+        NrdoOficio: number;
         Indiciado: string;
         TipoDeInquerito: string;
-        NrdoInquerito: string;
+        NrdoInquerito: number;
         Secao: string;
         Diretor: string;
         Cidade: string;
@@ -83,14 +80,13 @@ export interface ReportCardData {
       };
     };
     statusDoLaudo: {
-      currentStep: number,
-      sincronizado: boolean,
-      oculto: boolean,
-      completo: boolean,
-    },
+      currentStep: number;
+      sincronizado: boolean;
+      oculto: boolean;
+      completo: boolean;
+    };
   };
   sincronizado: boolean;
-
 }
 
 interface ReportCardProps {
@@ -98,14 +94,11 @@ interface ReportCardProps {
 }
 
 export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
-
   return (
-
     <View style={styles.container} testID="reportCard-test">
       <View style={styles.content}>
         <Text style={styles.info}>
           Rep:
-
           <Text style={styles.description} testID="reportCardText-test">
             {data.LaudoVeicular.Data.Cabecalho.Rep}
           </Text>
@@ -130,7 +123,6 @@ export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
         </Text>
       </View>
       <View style={styles.contentIcon}>
-
         {data.LaudoVeicular.statusDoLaudo.sincronizado == true && (
           <>
             <AntDesign
@@ -138,44 +130,36 @@ export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
               size={20}
               color="#2DCE89"
               style={styles.icon}
-
             />
-            <Text style={styles.iconeText} >Enviado!</Text>
+            <Text style={styles.iconeText}>Enviado!</Text>
           </>
         )}
 
-        {data.LaudoVeicular.statusDoLaudo.sincronizado == false && data.LaudoVeicular.statusDoLaudo.completo == false && (
-          <>
-            <MaterialIcons
-              name="error"
-              size={20}
-              color="red"
-              style={styles.icon}
-
-            />
-            <Text style={styles.iconeText} >Incompleto!</Text>
-          </>
-
-        )}
-        {data.LaudoVeicular.statusDoLaudo.sincronizado == false
-          && data.LaudoVeicular.statusDoLaudo.completo == true && (
+        {data.LaudoVeicular.statusDoLaudo.sincronizado == false &&
+          data.LaudoVeicular.statusDoLaudo.completo == false && (
+            <>
+              <MaterialIcons
+                name="error"
+                size={20}
+                color="red"
+                style={styles.icon}
+              />
+              <Text style={styles.iconeText}>Incompleto!</Text>
+            </>
+          )}
+        {data.LaudoVeicular.statusDoLaudo.sincronizado == false &&
+          data.LaudoVeicular.statusDoLaudo.completo == true && (
             <>
               <AntDesign
                 name="warning"
                 size={20}
                 color="#F2EB88"
                 style={styles.icon}
-
               />
-              <Text style={styles.iconeText} >Clique para enviar</Text>
+              <Text style={styles.iconeText}>Clique para enviar</Text>
             </>
-
           )}
-
-
       </View>
     </View>
-
-
   );
 }

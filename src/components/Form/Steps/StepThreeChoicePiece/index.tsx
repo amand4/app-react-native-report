@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Text, TouchableOpacity, View, Alert, Animated, StyleSheet } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
+  Animated,
+  StyleSheet,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import { pieces } from "../../../../config/constants";
+// import { pieces } from "../../../../config/constants";
 import styles from "./styles";
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from "react-native-gesture-handler";
 
 import { AntDesign, FontAwesome, Feather } from "@expo/vector-icons";
 
@@ -15,15 +22,14 @@ import { Footer } from "../../../Footer";
 
 import type { RootState } from "../../../../store/index";
 import colors from "../../../../styles/colors";
-
-import actions from '../../../../actions/todo'
-
-
+import { pieces } from "../../../../config/constants";
+import actions from "../../../../actions/todo";
 
 export function StepThreeChoicePiece(): JSX.Element {
-
   const dispatch = useDispatch();
   const [arrayPieces, setArrayPieces] = useState([]);
+  const [piece, setPiece] = useState(0);
+
   const piecies = useSelector((state: RootState) => {
     return state.reportReducer.LaudoVeicular.Data.Veiculo.Pieces;
   });
@@ -31,36 +37,27 @@ export function StepThreeChoicePiece(): JSX.Element {
     return state.reportReducer;
   });
 
-
   useEffect(() => {
-
-    setArrayPieces(piecies)
+    setArrayPieces(piecies);
   }, [piecies]);
 
   const handleRemove = (typeNumber: string) => {
-    Alert.alert('Remover', `Deseja remover o ${typeNumber}?`, [
+    Alert.alert("Remover", `Deseja remover o ${typeNumber}?`, [
       {
-        text: 'Não 🙏',
-        style: 'cancel',
+        text: "Não 🙏",
+        style: "cancel",
       },
       {
-        text: 'Sim 😥',
+        text: "Sim 😥",
         onPress: async () => {
           try {
-            dispatch(actions.removePiece(typeNumber))
-
+            dispatch(actions.removePiece(typeNumber));
           } catch (error) {
-            Alert.alert('Não foi possível remover!');
+            Alert.alert("Não foi possível remover!");
           }
         },
       },
     ]);
-  }
-
-  const setPiece = (value: any) => {
-
-    dispatch(actions.addTypePiece(value))
-
   };
 
   const isValid = () => {
@@ -79,29 +76,32 @@ export function StepThreeChoicePiece(): JSX.Element {
     return (
       <>
         {arrayPieces.map((item: any, index: number) => (
-
-          <Swipeable key={index}
+          <Swipeable
+            key={index}
             overshootRight={false}
             renderRightActions={() => (
               <Animated.View>
                 <View>
-                  <RectButton style={styles.buttonRemove} onPress={() => handleRemove(item["Type"])
-                  }>
-                    <Feather name="trash" size={20} color={colors.white}></Feather>
+                  <RectButton
+                    style={styles.buttonRemove}
+                    onPress={() => handleRemove(item["Type"])}
+                  >
+                    <Feather
+                      name="trash"
+                      size={20}
+                      color={colors.white}
+                    ></Feather>
                   </RectButton>
                 </View>
               </Animated.View>
-            )
-            }
+            )}
           >
-            <RectButton style={styles.containerItem} >
+            <RectButton style={styles.containerItem}>
               <Text style={styles.buttonText}>{item["Type"]}</Text>
               <AntDesign name="checkcircle" style={styles.icone} />
-
             </RectButton>
-          </Swipeable >
-        ))
-        }
+          </Swipeable>
+        ))}
       </>
     );
   };
@@ -110,21 +110,18 @@ export function StepThreeChoicePiece(): JSX.Element {
     <View style={styles.fields}>
       <Select
         onValueChange={(selectedValue, itemIndex) => {
-
-          setPiece(selectedValue);
+          setPiece(itemIndex);
+          dispatch(actions.addTypePiece(pieces[itemIndex].label));
         }}
         options={pieces}
-        value={state.tipoDePeca.peca}
+        value={piece}
         errorMessage={"Erro: Selecione o Tipo de Peça"}
         testID="selec-piece"
       />
 
       <RenderPieces />
 
-
-
       <Footer validate={isValid}></Footer>
     </View>
   );
 }
-

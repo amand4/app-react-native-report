@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Alert, Modal, StyleSheet, Text, Pressable, ScrollView, View, TouchableOpacity } from "react-native";
+import {
+  Button,
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import styles from "./styles";
 import { typeVehicles } from "../../config/constants";
@@ -7,38 +17,36 @@ import { VehicleCardPrimary } from "../../components/VehicleCard";
 import { Header } from "../../components/Header";
 import { NextArrowButton } from "../../components/Buttons/NextArrowButton";
 
-// import {
-//   addTypeVehicle, resetDataState
-// } from '../../reducers/todo';
-import actions from '../../actions/todo';
+import actions from "../../actions/todo";
 
 import { useDispatch, useSelector } from "react-redux";
 // import { loadReport } from "../../services/database/storage";
 import useAsyncStorage from "@react-native-async-storage/async-storage";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/auth";
 
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-
+import { RectButton, RectButtonProps } from "react-native-gesture-handler";
 
 export function VehicleSelect() {
   const { user } = useAuth();
 
   const dispatch = useDispatch();
   const [myReports, setMyReports] = useState<any[]>([]);
-  const [vehicleChoice, setVehicleChoie] = useState<string>("");
-
+  const [vehicleChoice, setVehicleChoie] = useState<any>("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
 
-  const setTypeVehicle = (data: string) => {
-    dispatch(actions.addTypeVehicle(data));
-  };
-
   const handleStart = (value: string) => {
-    setModalVisible(true)
-    setVehicleChoie(value)
+    dispatch(actions.addTypeVehicle(vehicleChoice));
+
+    if (!myReports) {
+      setModalVisible(true);
+      setVehicleChoie(value);
+    } else {
+      setVehicleChoie(value);
+      navigation.navigate("NewReport");
+    }
   };
 
   const handleViewReports = () => {
@@ -47,21 +55,18 @@ export function VehicleSelect() {
 
   const handleContinueReport = (data: any) => {
     dispatch(actions.resetDataState(data));
-    // console.log(data)
     setModalVisible(!modalVisible);
     navigation.navigate("NewReport");
-
-
-  }
+  };
   const handleNewReport = () => {
-    setTypeVehicle(vehicleChoice);
+    // setTypeVehicle(vehicleChoice);
+    dispatch(actions.addTypeVehicle(vehicleChoice));
     navigation.navigate("NewReport");
-  }
+  };
 
   const ModalReport = () => {
-
     return (
-      <View >
+      <View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -76,31 +81,29 @@ export function VehicleSelect() {
               <View>
                 <TouchableOpacity onPress={() => setModalVisible(false)}>
                   <Text style={styles.closeModal}> X </Text>
-
                 </TouchableOpacity>
-
               </View>
               {myReports && (
                 <>
                   <Text style={styles.modalText}>Laudos incompletos</Text>
-                  <Text style={styles.modalText}>Clique no qual deseja continuar:</Text>
+                  <Text style={styles.modalText}>
+                    Clique no qual deseja continuar:
+                  </Text>
 
                   {/* <ScrollView style={styles.modalListItem}> */}
                   <View style={styles.modalListItem}>
-
-
-                    {
-                      myReports.map((item: any, index: number) => (
-
-
-                        <TouchableOpacity key={index} onPress={() => handleContinueReport(item)
-                        }>
-
-                          <Text> <Text>{index + 1} - </Text>{item.LaudoVeicular.Data.Cabecalho.Rep}</Text>
-                        </TouchableOpacity>
-
-                      ))
-                    }
+                    {myReports.map((item: any, index: number) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => handleContinueReport(item)}
+                      >
+                        <Text>
+                          {" "}
+                          <Text>{index + 1} - </Text>
+                          {item.LaudoVeicular.Data.Cabecalho.Rep}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
                   </View>
                 </>
               )}
@@ -110,8 +113,8 @@ export function VehicleSelect() {
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setModalVisible(!modalVisible)
-                  handleNewReport()
+                  setModalVisible(!modalVisible);
+                  handleNewReport();
                 }}
               >
                 <Text style={styles.textStyle}>Criar um novo</Text>
@@ -119,24 +122,21 @@ export function VehicleSelect() {
             </View>
           </View>
         </Modal>
-
       </View>
     );
   };
 
-
   useEffect(() => {
-
     async function loadStorageData() {
       const dataKey = `@laudos_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const reportsStoraged = data ? (JSON.parse(data) as any) : [];
       let reportsFiltered;
       if (reportsStoraged) {
-        reportsFiltered = await reportsStoraged.filter((item: any) => item.LaudoVeicular.statusDoLaudo.completo == false)
-
+        reportsFiltered = await reportsStoraged.filter(
+          (item: any) => item.LaudoVeicular.statusDoLaudo.completo == false
+        );
       }
-      console.log(reportsFiltered)
       setMyReports(reportsFiltered);
     }
     loadStorageData();
@@ -151,7 +151,8 @@ export function VehicleSelect() {
       <View>
         <Text style={styles.title}> Escolha um veículo</Text>
       </View>
-      <ModalReport />
+
+      {myReports.length > 0 && <ModalReport />}
 
       <View style={styles.vehicles}>
         <View style={styles.cards}>
@@ -176,7 +177,3 @@ export function VehicleSelect() {
     </View>
   );
 }
-
-
-
-

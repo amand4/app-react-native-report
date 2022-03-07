@@ -59,7 +59,6 @@ export const secao = [
 export const pieces = [
   { value: "Selecione um tipo", label: "Selecione um tipo" },
   { value: "Chassi", label: "Chassi" },
-
   { value: "Motor", label: "Motor" },
 
 ];

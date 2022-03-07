@@ -13,38 +13,18 @@ export function Login() {
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  // const [ehValid, setValid] = useState(false);
-  // const users = ["teste", "123"];
+
   const { signIn, signOut } = useAuth();
 
   async function handleSignIn() {
-
-
     try {
       await signIn(name, password);
     } catch (error) {
-      console.error();
-
-      Alert.alert("Não foi possivel conectar na sua conta.");
+      Alert.alert(
+        "Usário ou senha inválida! Tente novamente com outras credênciais"
+      );
     }
   }
-
-  // const showError = () =>
-  //   Alert.alert("Usuário inválido!!", "Verifique se preencheu corretamente.", [
-  //     { text: "Sair" },
-  //   ]);
-
-  // const onSubmit = () => {
-  //   handleSignIn();
-  // if (username && password) {
-  //   setValid(true);
-  //   navigation.navigate("VehicleSelect");
-  //   setName("");
-  //   setPassword("");
-  // } else {
-  //   showError();
-  // }
-  // };
 
   return (
     <View style={styles.container}>
@@ -73,7 +53,7 @@ export function Login() {
       >
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-      <Text style={styles.text}>Esqueceu a senha?</Text>
+      {/* <Text style={styles.text}>Esqueceu a senha?</Text> */}
     </View>
   );
 }

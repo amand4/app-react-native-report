@@ -9,7 +9,7 @@ import { View, Alert } from "react-native";
 import styles from "./styles";
 
 import { RootState } from "../../store";
-import actions from "../../actions/todo"
+import actions from "../../actions/todo";
 import { NextArrowButton } from "../../components/Buttons/NextArrowButton";
 import { BackArrowButton } from "../../components/Buttons/BackArrowButton";
 import { FinalArrowButton } from "../../components/Buttons/FinalArrowButton";
@@ -21,7 +21,6 @@ interface StepOneGeneralInformationProps {
   validate: () => boolean;
 }
 export function Footer(props: StepOneGeneralInformationProps) {
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { user } = useAuth();
@@ -35,7 +34,7 @@ export function Footer(props: StepOneGeneralInformationProps) {
 
   const handleSubmit = async () => {
     try {
-      const response = await report.save(dataKey, state);
+      const response = await report.save(dataKey, state, user);
       // const laudos = await AsyncStorage.getItem(dataKey);
       // const currentLaudos = laudos ? JSON.parse(laudos) : [];
       // const indexFindReport = currentLaudos.findIndex((element: any) => element.LaudoVeicular.id == state.LaudoVeicular.id);
@@ -44,7 +43,6 @@ export function Footer(props: StepOneGeneralInformationProps) {
 
       // if (indexFindReport) {
       //   currentLaudos[indexFindReport] = state
-
 
       //   await AsyncStorage.setItem(
       //     dataKey,
@@ -62,7 +60,6 @@ export function Footer(props: StepOneGeneralInformationProps) {
     } catch (error) {
       Alert.alert("Erro", "Não foi possível cadastrar o laudo");
     }
-
   };
 
   const setCurrentStep = (value: number) => {
