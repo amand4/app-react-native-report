@@ -6,7 +6,7 @@ Application development for data collection of vehicle tests.
 
 ## To know more:
 
-- Notion - Banco de dados: [https://www.notion.so/Estrutura-Banco-de-Dados-ff94180d84af415c842e89d29c2784be](https://www.notion.so/Estrutura-Banco-de-Dados-ff94180d84af415c842e89d29c2784be)
+- Notion - GERAL: [https://www.notion.so/App-Vehicle-report-generator-ff94180d84af415c842e89d29c2784be](https://www.notion.so/App-Vehicle-report-generator-ff94180d84af415c842e89d29c2784be)
 - Mapa Mental: [https://www.mindmeister.com/1462695947?t=8NurUuLG0G](https://www.mindmeister.com/1462695947?t=8NurUuLG0G)
 - Notion - React Native: [https://www.notion.so/React-Native-6c5cb86bb42c408d92eea124e904ab98](https://www.notion.so/React-Native-6c5cb86bb42c408d92eea124e904ab98)
 - Figma: [https://www.figma.com/file/qICB9WdU0KzVvexNP1yC9y/App-Interface?node-id=107%3A86](https://www.figma.com/file/qICB9WdU0KzVvexNP1yC9y/App-Interface?node-id=107%3A86)
