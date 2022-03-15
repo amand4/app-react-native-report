@@ -2,19 +2,19 @@ import { StyleSheet } from "react-native";
 import colors from "../../../styles/colors";
 
 const styles = StyleSheet.create({
-    btnCloseContainer: {
+  btnCloseContainer: {
+    flexDirection: "row",
+    margin: 5,
+    width: "100%",
+    justifyContent: "flex-end",
+  },
 
-        margin: 5,
-    },
+  btnCloseText: {
+    fontSize: 14,
 
-    btnCloseText: {
-        flexDirection: "column",
-        alignItems: "center",
-        fontSize: 12,
-        textAlign: "center",
-        color: colors.blue_light,
-        marginHorizontal: 4
-    },
+    color: colors.red,
+    marginHorizontal: 4,
+  },
 });
 
 export default styles;

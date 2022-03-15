@@ -20,11 +20,13 @@ import { ReportCard, ReportCardData } from "../../components/ReportCard";
 import { Header } from "../../components/Header";
 import { BackArrowButton } from "../../components/Buttons/BackArrowButton";
 
-import laudoOficial from "../../../laudoOficial.json";
+import { Select } from "../../../src/components/Select";
 
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/auth";
 import colors from "../../styles/colors";
+import { update } from "../../services/database/storage";
+import { SelectString } from "../../components/Select/SelectString";
 
 export interface DataLitsProps extends ReportCardData {
   id: string;
@@ -37,27 +39,11 @@ export function MyReports() {
   const dataKey = `@laudos_user:${user.id}`;
   const [report, setReport] = useState({});
   const tokenStorageKey = "@AppAuth:token";
+  const [filter, setFilter] = useState("todos");
+
   const [storagedToken] = useState(
     AsyncStorage.getItem("@AppAuth:token") || ""
   );
-
-  async function loadLaudos() {
-    const response = await AsyncStorage.getItem(dataKey);
-
-    if (response) {
-      const storegedLaudos: DataLitsProps[] = response
-        ? JSON.parse(response)
-        : [];
-
-      let arrayReportAvailable = [];
-      for (const item of storegedLaudos) {
-        if (item.LaudoVeicular.statusDoLaudo.oculto == false) {
-          arrayReportAvailable.push(item);
-        }
-      }
-      setLaudos(arrayReportAvailable);
-    }
-  }
 
   const saveData = async (laudos: any) => {
     try {
@@ -83,6 +69,20 @@ export function MyReports() {
     navigation.navigate("VehicleSelect");
   };
 
+  const handleFilteredReportsSincronized = (status: boolean) => {
+    const newArray = laudos.filter((item) => {
+      return item.LaudoVeicular.statusDoLaudo.sincronizado === status;
+    });
+    return setLaudos(newArray);
+  };
+
+  const handleFilteredReportsIncomplet = (status: boolean) => {
+    const newArray = laudos.filter((item) => {
+      return item.LaudoVeicular.statusDoLaudo.completo === status;
+    });
+    return setLaudos(newArray);
+  };
+
   const handleRemove = (index: number) => {
     Alert.alert("Atenção", `Tem certeza que deseja remover?`, [
       {
@@ -104,7 +104,6 @@ export function MyReports() {
 
   const toSendReport = async (report: any) => {
     const reporConvert = JSON.stringify(report);
-    console.log(reporConvert);
 
     try {
       const response = await api.post(
@@ -119,8 +118,12 @@ export function MyReports() {
           },
         }
       );
-      console.log(response);
+      report.LaudoVeicular.statusDoLaudo.sincronizado = true;
+      await update(dataKey, report);
+      console.log(response.data);
     } catch (error) {
+      console.log(reporConvert);
+
       console.log(error);
 
       Alert.alert(
@@ -129,29 +132,76 @@ export function MyReports() {
     }
   };
 
+  async function loadLaudos() {
+    const response = await AsyncStorage.getItem(dataKey);
+
+    if (response) {
+      const storegedLaudos: DataLitsProps[] = response
+        ? JSON.parse(response)
+        : [];
+
+      let arrayReportAvailable = [];
+      for (const item of storegedLaudos) {
+        if (item.LaudoVeicular.statusDoLaudo.oculto == false) {
+          arrayReportAvailable.push(item);
+        }
+      }
+
+      setLaudos(arrayReportAvailable);
+      return arrayReportAvailable;
+    }
+  }
   useEffect(() => {
     loadLaudos();
   }, []);
 
   useEffect(() => {
-    loadLaudos();
-  }, [laudos]);
+    if (filter == "enviados") {
+      handleFilteredReportsSincronized(true);
+    }
+    if (filter == "incompletos") {
+      handleFilteredReportsIncomplet(false);
+    }
+    if (filter == "todos") {
+      loadLaudos();
+    }
+    if (filter == "aguardandoEnvio") {
+      handleFilteredReportsSincronized(false);
+    }
+  }, [filter]);
 
   return (
     <View style={styles.container}>
       <View>
         <Header></Header>
       </View>
-      {laudos.length != 0 ? (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}> Laudos </Text>
+        </View>
+        <View>
           <View>
-            <Text style={styles.title}> Laudos </Text>
-          </View>
-          <View style={styles.containerLegend}>
-            <Text style={styles.subtitle}> Laudo </Text>
-            <Text style={styles.subtitleStatus}> Status </Text>
-          </View>
+            <SelectString
+              onValueChange={(selectedValue) => {
+                setFilter(selectedValue);
+              }}
+              options={[
+                { value: "todos", label: "todos" },
 
+                { value: "incompletos", label: "incompletos" },
+                { value: "enviados", label: "enviados" },
+                { value: "aguardandoEnvio", label: "Aguardando Envio" },
+              ]}
+              value={filter}
+              errorMessage={"Erro: Selecione o Tipo de numeração"}
+            />
+          </View>
+        </View>
+        <View style={styles.containerLegend}>
+          <Text style={styles.subtitle}> Laudo </Text>
+          <Text style={styles.subtitleStatus}> Status </Text>
+        </View>
+        {laudos.length != 0 ? (
           <FlatList
             data={laudos}
             renderItem={({ item: LaudoVeicular, index }) => (
@@ -182,15 +232,16 @@ export function MyReports() {
             )}
             keyExtractor={(item) => item.LaudoVeicular.id}
           />
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.textResult}>
-            {" "}
-            Não há nenhum registro de laudos
-          </Text>
-        </View>
-      )}
+        ) : (
+          <View>
+            <Text style={styles.textResult}>
+              {" "}
+              Não há nenhum registro de laudos
+            </Text>
+          </View>
+        )}
+      </View>
+
       <View style={styles.footer}>
         <BackArrowButton
           title="Voltar"

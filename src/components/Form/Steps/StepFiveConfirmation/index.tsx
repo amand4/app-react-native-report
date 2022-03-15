@@ -236,20 +236,7 @@ export function StepFiveConfirmation() {
               />
             </View>
           </View>
-          {/* <View style={styles.contentField}>
-            <View style={styles.fieldText}>
-              <Text style={styles.text}>Perito:</Text>
-            </View>
-            <View style={styles.field}>
-              <InputView
-                testID="input-number1"
-                placeholder=""
-                editable={false}
-                selectTextOnFocus={false}
-                value={laudo.Data.Cabecalho.Perito}
-              />
-            </View>
-          </View> */}
+
           <View style={styles.contentField}>
             <View style={styles.fieldText}>
               <Text style={styles.text}>Nat. Exame:</Text>

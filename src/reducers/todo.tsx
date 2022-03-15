@@ -172,6 +172,7 @@ const reportReducer = (state = INITIAL_STATE, action: AnyAction) => {
 
     case "RESET_DATA":
       state = action.payload;
+      break;
   }
   return { ...state };
 };

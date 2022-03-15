@@ -29,7 +29,6 @@ import { StepFiveConfirmation } from "../../components/Form/Steps/StepFiveConfir
 import StepsBar from "./StepsBar";
 import BtnClose from "./BtnClose";
 
-
 export function NewReport() {
   const navigation = useNavigation();
 
@@ -74,18 +73,15 @@ export function NewReport() {
               <View style={styles.form}>
                 {/** Steps */}
                 <StepsBar />
-
+                <BtnClose />
                 {/** Step 1 */}
                 <>
-                  <BtnClose />
-
                   {currentStep == 1 && (
                     <>
                       <View style={styles.header}>
                         <Text style={styles.title}>
                           Etapa 1 - Informações Gerais
-                      </Text>
-
+                        </Text>
                       </View>
                       <StepOneGeneralInformation />
                     </>
@@ -96,7 +92,7 @@ export function NewReport() {
                       <View style={styles.header}>
                         <Text style={styles.title}>
                           Etapa 2 - Dados básicos do Veículo
-                      </Text>
+                        </Text>
                       </View>
                       <StepTwoDataBasic />
                     </>
@@ -105,7 +101,9 @@ export function NewReport() {
                   {currentStep == 3 && (
                     <>
                       <View style={styles.header}>
-                        <Text style={styles.title}>Etapa 3 - Escolha a Peça</Text>
+                        <Text style={styles.title}>
+                          Etapa 3 - Escolha a Peça
+                        </Text>
                       </View>
                       <StepThreeChoicePiece />
                     </>

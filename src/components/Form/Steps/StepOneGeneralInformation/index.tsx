@@ -111,11 +111,11 @@ export function StepOneGeneralInformation() {
           placeholder="Rep (xxxx/2021) *"
           error={repIsValid()}
           errorMessage={"Erro: o formato deve ser: Rep (xxxx/yyyy)"}
-          value={rep}
+          value={String(rep)}
           onChangeText={(value) => {
-            const teste = Number(value);
-            setRep(teste);
-            dispatch(actions.addRep(teste));
+            const repConvertNumber = Number(value);
+            setRep(repConvertNumber);
+            dispatch(actions.addRep(repConvertNumber));
           }}
           defaultValue={rep}
           testID="input-rep"

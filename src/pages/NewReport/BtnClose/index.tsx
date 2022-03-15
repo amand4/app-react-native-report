@@ -18,65 +18,53 @@ import { RootState } from "../../../store";
 
 // function BtnClose() {
 export default function BtnClose() {
-    const { user } = useAuth();
+  const { user } = useAuth();
 
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
+  const state = useSelector((state: RootState) => state.reportReducer);
 
-    const state = useSelector((state: RootState) => state.reportReducer);
+  const dataKey = `@laudos_user:${user.id}`;
 
-
-    const dataKey = `@laudos_user:${user.id}`;
-
-    const handleSubmit = function () {
-        Alert.alert(
-            "Tem certeza que seja encerrar o formulário?",
-            "Será redirecionado para tela inicial.",
-            [
-                {
-                    text: "Cancelar",
-                    style: "cancel",
-
-                },
-                {
-                    text: "Deletar e Sair",
-                    onPress: () => {
-                        dispatch(resetState());
-                        navigation.navigate("VehicleSelect");
-
-                    },
-
-                },
-                {
-                    text: "Salvar e Sair", onPress: async () => {
-                        await report.save(dataKey, state);
-                        navigation.navigate("VehicleSelect");
-                        dispatch(resetState());
-                    }
-                }
-
-            ]
-        );
-
-    };
-    return (
-        <View style={styles.btnCloseContainer}>
-            <View>
-                <Text style={styles.btnCloseText}>
-                    <TouchableHighlight onPress={handleSubmit}>
-
-                        <AntDesign
-                            name="closecircle"
-                            size={20}
-                            color={colors.blue_light}
-                        />
-                    </TouchableHighlight>
-                </Text>
-
-            </View>
-        </View>
+  const handleSubmit = function () {
+    Alert.alert(
+      "Tem certeza que seja encerrar o formulário?",
+      "Será redirecionado para tela inicial.",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Deletar e Sair",
+          onPress: () => {
+            dispatch(resetState());
+            navigation.navigate("VehicleSelect");
+          },
+        },
+        {
+          text: "Salvar e Sair",
+          onPress: async () => {
+            await report.save(dataKey, state, user, true);
+            navigation.navigate("VehicleSelect");
+            dispatch(resetState());
+          },
+        },
+      ]
     );
+  };
+  return (
+    <View style={styles.btnCloseContainer}>
+      <View>
+        <Text style={styles.btnCloseText}>
+          <TouchableHighlight onPress={handleSubmit}>
+            <AntDesign name="closecircle" size={20} color={colors.red} />
+          </TouchableHighlight>
+        </Text>
+      </View>
+    </View>
+  );
 }
 
 // export { BtnClose }

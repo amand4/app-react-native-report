@@ -40,12 +40,8 @@ export function VehicleSelect() {
   const handleStart = (value: string) => {
     dispatch(actions.addTypeVehicle(vehicleChoice));
 
-    if (!myReports) {
+    if (myReports) {
       setModalVisible(true);
-      setVehicleChoie(value);
-    } else {
-      setVehicleChoie(value);
-      navigation.navigate("NewReport");
     }
   };
 
@@ -151,8 +147,7 @@ export function VehicleSelect() {
       <View>
         <Text style={styles.title}> Escolha um veículo</Text>
       </View>
-
-      {myReports.length > 0 && <ModalReport />}
+      <ModalReport />
 
       <View style={styles.vehicles}>
         <View style={styles.cards}>
