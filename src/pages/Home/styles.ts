@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.shape,
-
   },
 
   title: {
@@ -26,8 +25,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "space-around",
     flexDirection: "column",
-    alignItems: "center"
-
+    alignItems: "center",
   },
 
   cards: {
@@ -35,55 +33,59 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-
-
+  containerModal: {
+    justifyContent: "center",
+    backgroundColor: "red",
+    alignItems: "center",
+  },
   modalView: {
-    height: 200,
+    height: 250,
     margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 30,
+    // width: "100%",
     marginTop: "50%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   modalListItem: {
     // height: 50,
     // backgroundColor: "red",
-    marginHorizontal: 10,
-    paddingHorizontal: 30,
+    // marginHorizontal: 10,
+    // paddingHorizontal: 30,
   },
 
   button: {
     marginTop: 10,
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: colors.blue_light,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     // marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   closeModal: {
-    textAlign: "right"
+    textAlign: "right",
   },
 });
 

@@ -47,7 +47,10 @@ export const typeAdulterated = [
 ];
 export const naturezaExame = [
   { value: "Selecione um tipo", label: "Selecione um tipo" },
-  { value: "Adulteracao no chassi", label: "Nat. do Exame: Adulteracao no chassi" },
+  {
+    value: "Adulteracao no chassi",
+    label: "Nat. do Exame: Adulteracao no chassi",
+  },
 ];
 export const secao = [
   { value: "Selecione um tipo", label: "Selecione um tipo" },
@@ -60,7 +63,6 @@ export const pieces = [
   { value: "Selecione um tipo", label: "Selecione um tipo" },
   { value: "Chassi", label: "Chassi" },
   { value: "Motor", label: "Motor" },
-
 ];
 
 export const typeNumbers = [
@@ -75,7 +77,14 @@ export const stateConservation = [
   { value: "Bom", label: "Bom" },
   { value: "Regular", label: "Regular" },
   { value: "Mau", label: "Mau" },
+];
 
+export const optionsStatusReports = [
+  { value: "todos", label: "Todos" },
+
+  { value: "incompletos", label: "Incompletos" },
+  { value: "enviados", label: "Enviados" },
+  { value: "aguardandoEnvio", label: "Aguardando Envio" },
 ];
 
 const all = {
@@ -90,7 +99,7 @@ const all = {
   cities,
   naturezaExame,
   pieces,
-  stateConservation
-}
+  stateConservation,
+};
 
 export default all;

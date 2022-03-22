@@ -26,6 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/auth";
 
 import { RectButton, RectButtonProps } from "react-native-gesture-handler";
+import BtnClose from "../../components/BtnClose";
 
 export function VehicleSelect() {
   const { user } = useAuth();
@@ -75,11 +76,9 @@ export function VehicleSelect() {
           <View>
             <View style={styles.modalView}>
               <View>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Text style={styles.closeModal}> X </Text>
-                </TouchableOpacity>
+                <BtnClose onPress={() => setModalVisible(false)} />
               </View>
-              {myReports && (
+              {myReports.length > 0 && (
                 <>
                   <Text style={styles.modalText}>Laudos incompletos</Text>
                   <Text style={styles.modalText}>
@@ -105,7 +104,7 @@ export function VehicleSelect() {
               )}
 
               {/* </ScrollView> */}
-
+              <Text style={styles.modalText}>Clique para continuar</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
@@ -139,36 +138,40 @@ export function VehicleSelect() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Header></Header>
-      </View>
-
-      <View>
-        <Text style={styles.title}> Escolha um veículo</Text>
-      </View>
-      <ModalReport />
-
-      <View style={styles.vehicles}>
-        <View style={styles.cards}>
-          {typeVehicles.map(({ title, icone, available }, index) => (
-            <VehicleCardPrimary
-              key={`VehicleCardPrimary-${index}`}
-              title={title}
-              icone={icone}
-              available={available}
-              onPress={() => {
-                handleStart(title);
-              }}
-            />
-          ))}
+    <>
+      <View style={styles.container}>
+        <View>
+          <Header></Header>
         </View>
-        <NextArrowButton
-          title="Ver Laudos"
-          icone="upload-cloud"
-          onPress={handleViewReports}
-        />
+
+        <View>
+          <Text style={styles.title}> Escolha um veículo</Text>
+        </View>
+        <View style={styles.containerModal}>
+          <ModalReport />
+        </View>
+
+        <View style={styles.vehicles}>
+          <View style={styles.cards}>
+            {typeVehicles.map(({ title, icone, available }, index) => (
+              <VehicleCardPrimary
+                key={`VehicleCardPrimary-${index}`}
+                title={title}
+                icone={icone}
+                available={available}
+                onPress={() => {
+                  handleStart(title);
+                }}
+              />
+            ))}
+          </View>
+          <NextArrowButton
+            title="Ver Laudos"
+            icone="upload-cloud"
+            onPress={handleViewReports}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }

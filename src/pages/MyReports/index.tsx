@@ -27,6 +27,7 @@ import { useAuth } from "../../hooks/auth";
 import colors from "../../styles/colors";
 import { update } from "../../services/database/storage";
 import { SelectString } from "../../components/Select/SelectString";
+import { optionsStatusReports } from "../../config/constants";
 
 export interface DataLitsProps extends ReportCardData {
   id: string;
@@ -66,6 +67,7 @@ export function MyReports() {
   };
 
   const handleGoBack = () => {
+    console.log("volta");
     navigation.navigate("VehicleSelect");
   };
 
@@ -168,7 +170,7 @@ export function MyReports() {
     if (filter == "aguardandoEnvio") {
       handleFilteredReportsSincronized(false);
     }
-  }, [filter]);
+  }, [filter, laudos]);
 
   return (
     <View style={styles.container}>
@@ -180,18 +182,13 @@ export function MyReports() {
           <Text style={styles.title}> Laudos </Text>
         </View>
         <View>
-          <View>
+          <View style={styles.containerFilter}>
+            <Text style={styles.titleFilter}> Filtrar: </Text>
             <SelectString
               onValueChange={(selectedValue) => {
                 setFilter(selectedValue);
               }}
-              options={[
-                { value: "todos", label: "todos" },
-
-                { value: "incompletos", label: "incompletos" },
-                { value: "enviados", label: "enviados" },
-                { value: "aguardandoEnvio", label: "Aguardando Envio" },
-              ]}
+              options={optionsStatusReports}
               value={filter}
               errorMessage={"Erro: Selecione o Tipo de numeração"}
             />

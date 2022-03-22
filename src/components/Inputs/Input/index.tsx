@@ -16,8 +16,6 @@ interface InputProps {
   defaultValue?: any;
   editable?: boolean;
   testID?: string;
-
-
 }
 
 export function Input({

@@ -25,9 +25,13 @@ import { StepTwoDataBasic } from "../../components/Form/Steps/StepTwoDataBasic";
 import { StepThreeChoicePiece } from "../../components/Form/Steps/StepThreeChoicePiece";
 import { StepFourExam } from "../../components/Form/Steps/StepFourExam";
 import { StepFiveConfirmation } from "../../components/Form/Steps/StepFiveConfirmation";
+import { resetState } from "../../actions/todo";
+import report from "../../services/database/storage";
 
 import StepsBar from "./StepsBar";
-import BtnClose from "./BtnClose";
+import BtnClose from "../../components/BtnClose";
+
+import { useAuth } from "../../hooks/auth";
 
 export function NewReport() {
   const navigation = useNavigation();
@@ -35,7 +39,13 @@ export function NewReport() {
   const currentStep = useSelector(
     (state: RootState) => state.reportReducer.currentStep
   );
+  const { user } = useAuth();
 
+  const dispatch = useDispatch();
+
+  const state = useSelector((state: RootState) => state.reportReducer);
+
+  const dataKey = `@laudos_user:${user.id}`;
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Hey!", "Tem certeza que deseja sair do formulário?", [
@@ -57,6 +67,35 @@ export function NewReport() {
     return () => backHandler.remove();
   }, []);
 
+  const handleSubmit = function () {
+    console.log("testeeeeeeee");
+    Alert.alert(
+      "Tem certeza que seja encerrar o formulário?",
+      "Será redirecionado para tela inicial.",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Deletar e Sair",
+          onPress: () => {
+            dispatch(resetState());
+            navigation.navigate("VehicleSelect");
+          },
+        },
+        {
+          text: "Salvar e Sair",
+          onPress: async () => {
+            await report.save(dataKey, state, user, true);
+            navigation.navigate("VehicleSelect");
+            dispatch(resetState());
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -73,7 +112,7 @@ export function NewReport() {
               <View style={styles.form}>
                 {/** Steps */}
                 <StepsBar />
-                <BtnClose />
+                <BtnClose onPress={() => handleSubmit()} />
                 {/** Step 1 */}
                 <>
                   {currentStep == 1 && (

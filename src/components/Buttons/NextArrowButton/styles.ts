@@ -22,6 +22,25 @@ const styles = StyleSheet.create({
     shadowRadius: 3.9,
     elevation: 5,
   },
+  containerInvalid: {
+    backgroundColor: colors.gray,
+    flexDirection: "row",
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.gray,
+    width: "45%",
+    shadowColor: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.9,
+    elevation: 5,
+  },
 
   buttonText: {
     color: colors.white,
@@ -34,8 +53,8 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   disable: {
-display: "none"
-  }
+    display: "none",
+  },
 });
 
 export default styles;

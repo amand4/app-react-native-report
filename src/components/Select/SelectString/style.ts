@@ -12,22 +12,18 @@ const styles = StyleSheet.create({
     width: "100%",
     color: colors.text,
     fontSize: 14,
-
   },
   selectInvalid: {
     borderWidth: 1,
     borderColor: colors.red,
     marginVertical: 5,
     backgroundColor: colors.white,
-
   },
   errorMessage: {
     color: colors.red,
     fontSize: 10,
   },
-  selectText: {
-
-  }
+  selectText: {},
 });
 
 export default styles;

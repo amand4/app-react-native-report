@@ -18,9 +18,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import report from "../../services/database/storage";
 
 interface StepOneGeneralInformationProps {
-  validate: () => boolean;
+  validate: boolean;
 }
-export function Footer(props: StepOneGeneralInformationProps) {
+export function Footer({ validate }: StepOneGeneralInformationProps) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { user } = useAuth();
@@ -35,24 +35,6 @@ export function Footer(props: StepOneGeneralInformationProps) {
   const handleSubmit = async () => {
     try {
       const response = await report.save(dataKey, state, user);
-      // const laudos = await AsyncStorage.getItem(dataKey);
-      // const currentLaudos = laudos ? JSON.parse(laudos) : [];
-      // const indexFindReport = currentLaudos.findIndex((element: any) => element.LaudoVeicular.id == state.LaudoVeicular.id);
-
-      // state.LaudoVeicular.statusDoLaudo.completo = true;
-
-      // if (indexFindReport) {
-      //   currentLaudos[indexFindReport] = state
-
-      //   await AsyncStorage.setItem(
-      //     dataKey,
-      //     JSON.stringify(currentLaudos)
-      //   );
-      // } else {
-      //   await AsyncStorage.setItem(
-      //     dataKey,
-      //     JSON.stringify([...currentLaudos, state])
-      //   );
 
       navigation.navigate("MyReports");
       setCurrentStep(1);
@@ -67,9 +49,6 @@ export function Footer(props: StepOneGeneralInformationProps) {
   };
 
   const nextStep = () => {
-    const validate = true; // para testes
-    // const validate = props.validate();
-
     if (validate) {
       if (currentStep < 5) {
         const value = currentStep + 1;
@@ -89,7 +68,6 @@ export function Footer(props: StepOneGeneralInformationProps) {
   };
 
   const lastStep = () => {
-    const validate = props.validate();
     if (validate) {
       const value = currentStep + 2;
       setCurrentStep(value);
@@ -109,6 +87,7 @@ export function Footer(props: StepOneGeneralInformationProps) {
               title="Próximo"
               icone="arrow-right"
               onPress={nextStep}
+              isValid={validate}
             />
           </>
         )}
@@ -123,6 +102,7 @@ export function Footer(props: StepOneGeneralInformationProps) {
               title="Próximo"
               icone="arrow-right"
               onPress={nextStep}
+              isValid={validate}
             />
           </>
         )}
@@ -169,6 +149,7 @@ export function Footer(props: StepOneGeneralInformationProps) {
               title="Confirmar"
               icone="arrow-right"
               onPress={handleSubmit}
+              isValid={validate}
             />
           </View>
         </>
