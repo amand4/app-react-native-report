@@ -1,26 +1,29 @@
 export const typeInquerisOptions = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  {
+    value: "Selecione um tipo de Inquérito",
+    label: "Selecione um tipo de Inquérito",
+  },
   { value: "B.O", label: "Tipo de inquérito: B.O" },
   { value: "Policial", label: "Tipo de inquérito: Policial" },
 ];
 export const orgaoSolicitanteOptions = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione um Órgão Solicitante", label: "Selecione um tipo" },
   { value: "Fórum", label: "Órgão Solicitante: Fórum" },
   { value: "DS 14º", label: "Órgão Solicitante: DS 14º" },
 ];
 export const directorsOptions = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione um Diretor", label: "Selecione um tipo" },
   { value: "Jose Roberto", label: "Diretor: Jose Roberto" },
   { value: "Paulo Silva", label: "Diretor: Paulo Silva" },
 ];
 export const modeloOptions = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione um Modelo", label: "Selecione um tipo" },
   { value: "CG 160 Fan", label: "Modelo: CG 160 Fan" },
   { value: "CG 160 Titan", label: "Modelo: CG 160 Titan" },
   { value: "Biz 110i", label: "Modelo: Biz 110i" },
 ];
 export const marcaOptions = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione uma Marca", label: "Selecione um tipo" },
   { value: "Honda", label: "Marca: Honda" },
   { value: "Yamaha", label: "Marca: Yamaha" },
   { value: "Suzuki", label: "Marca: Suzuki" },
@@ -32,35 +35,34 @@ export const typeVehicles = [
   { title: "Semi-reboque", icone: "truck-loading", available: false },
 ];
 export const cities = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione uma Cidade", label: "Selecione uma cidade" },
   { value: "Guarapuava", label: "Cidade: Guarapuava" },
   { value: "Turvo", label: "Cidade: Turvo" },
   { value: "Pitanga", label: "Cidade: Pitanga" },
 ];
 export const typeAdulterated = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
-  // { value: "",  label: "Metodo de adulteração" },
+  { value: "Selecione um tipo de Adulteração", label: "Selecione um tipo" },
   { value: "Puncionamento", label: "Metodo de Puncionamento" },
   { value: "Desbaste", label: "Metodo de Desbaste" },
   { value: "Recorte", label: "Metodo de Recorte" },
   { value: "Outro", label: "Outro" },
 ];
 export const naturezaExame = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione a Natureza de Exame", label: "Selecione um tipo" },
   {
     value: "Adulteracao no chassi",
     label: "Nat. do Exame: Adulteracao no chassi",
   },
 ];
 export const secao = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione uma Seção", label: "Selecione um tipo" },
   { value: "Guarapuava", label: "Seção de Guarapuava" },
   { value: "Turvo", label: "Seção de Turvo" },
   { value: "Pitanga", label: "Seção de Pitanga" },
 ];
 
 export const pieces = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  { value: "Selecione uma Peça", label: "Selecione um tipo" },
   { value: "Chassi", label: "Chassi" },
   { value: "Motor", label: "Motor" },
 ];
@@ -81,7 +83,6 @@ export const stateConservation = [
 
 export const optionsStatusReports = [
   { value: "todos", label: "Todos" },
-
   { value: "incompletos", label: "Incompletos" },
   { value: "enviados", label: "Enviados" },
   { value: "aguardandoEnvio", label: "Aguardando Envio" },

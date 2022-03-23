@@ -17,7 +17,11 @@ export function NextArrowButton({
   ...rest
 }: ButtonProps) {
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7} {...rest}>
+    <TouchableOpacity
+      style={isValid ? styles.container : styles.containerInvalid}
+      activeOpacity={0.7}
+      {...rest}
+    >
       <Text style={styles.buttonText}>{title}</Text>
       <Feather name="arrow-right" style={styles.icone} />
     </TouchableOpacity>

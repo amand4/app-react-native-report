@@ -12,8 +12,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 2,
     borderColor: colors.blue_light,
-    width: "50%",
-
+    width: "40%",
 
     shadowColor: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     shadowOffset: {
@@ -23,7 +22,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3.9,
     elevation: 5,
-
   },
 
   buttonText: {
@@ -32,7 +30,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     justifyContent: "center",
-
   },
   icone: {
     fontSize: 20,
