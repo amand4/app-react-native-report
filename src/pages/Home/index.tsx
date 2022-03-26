@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  Pressable,
-  ScrollView,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { Alert, Modal, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import styles from "./styles";
 import { typeVehicles } from "../../config/constants";
@@ -19,13 +9,10 @@ import { NextArrowButton } from "../../components/Buttons/NextArrowButton";
 
 import actions from "../../actions/todo";
 
-import { useDispatch, useSelector } from "react-redux";
-// import { loadReport } from "../../services/database/storage";
-import useAsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/auth";
 
-import { RectButton, RectButtonProps } from "react-native-gesture-handler";
 import BtnClose from "../../components/BtnClose";
 
 export function VehicleSelect() {
@@ -56,7 +43,6 @@ export function VehicleSelect() {
     navigation.navigate("NewReport");
   };
   const handleNewReport = () => {
-    // setTypeVehicle(vehicleChoice);
     dispatch(actions.addTypeVehicle(vehicleChoice));
     navigation.navigate("NewReport");
   };
@@ -169,6 +155,7 @@ export function VehicleSelect() {
             title="Ver Laudos"
             icone="upload-cloud"
             onPress={handleViewReports}
+            isValid={true}
           />
         </View>
       </View>

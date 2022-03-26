@@ -3,6 +3,7 @@ import { Text, View, Alert } from "react-native";
 import { RadioButton } from "react-native-paper";
 
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 import { marcaOptions, modeloOptions } from "../../../../config/constants";
 import { maskPlaca } from "../../../../utils/maks";
@@ -10,14 +11,17 @@ import { maskPlaca } from "../../../../utils/maks";
 import styles from "./styles";
 import colors from "../../../../styles/colors";
 
-
 import { Input } from "../../../Inputs/Input";
 import { Select } from "../../../Select";
-import { Footer } from "../../../Footer";
+import { NextArrowButton } from "../../../../components/Buttons/NextArrowButton";
+import { BackArrowButton } from "../../../../components/Buttons/BackArrowButton";
 
-import actions from '../../../../actions/todo'
+import actions from "../../../../actions/todo";
+import { inputIsValid, selectIsValid } from "../../../../utils/validate";
 
 export function StepTwoDataBasic() {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const [plate, setPlate] = useState("");
   const [model, setModel] = useState(0);
@@ -25,78 +29,46 @@ export function StepTwoDataBasic() {
   const [yearModelFab, setYearModelFab] = useState("");
   const [color, setColor] = useState("");
   const [conservationState, setConservationState] = useState(0);
+  const [isValid, setValid] = useState(true);
+  const [validateBrand, setValidateBrand] = useState(false);
+  const [validateModel, setValidateModel] = useState(false);
+    useState(false);
 
-  const dispatch = useDispatch();
-
-  const placaIsValid = () => {
-
-    // return (
-    //   data.Placa.length <= 2 && data.Placa.length > 0
-
-    // );
+  const setCurrentStep = (value: number) => {
+    dispatch(actions.updateCurrentStep(value));
   };
 
-
-  const marcaIsValid = () => {
-    // return data.Marca === "Selecione uma Marca";
+  const nextStep = () => {
+    if (
+      (plate && yearModelFab && color !== "") ||
+      (model && brand && conservationState !== 0 && isValid)
+    ) {
+      setCurrentStep(3);
+    } else {
+      Alert.alert(
+        "Ops, informações inválidas!",
+        "Verique se preencheu todas as informações desta etapa corretamente.",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+      );
+    }
   };
 
-
-  const modeloIsValid = () => {
-    // return data.Modelo.length <= 2 && data.Modelo.length > 0;
+  const previousStep = () => {
+    setCurrentStep(1);
   };
-
-
-  const anoModeloFabIsValid = () => {
-    // return data.AnoModeloFab.length <= 2 && data.AnoModeloFab.length > 0;
-  };
-
-
-  const corIsValid = () => {
-    // return data.Cor.length <= 2 && data.Cor.length > 0;
-  };
-
-
-  const estadoDeConservacaoIsValid = () => {
-    // return (
-    //   // data.EstadoDeConservacao.length <= 2 &&
-    //   // data.EstadoDeConservacao.length > 0
-    // );
-  };
-
-
-  const isValid = () => {
-    let cont = 0;
-
-    // for (const [key, value] of Object.entries(data)) {
-    //   if (value == "" || value == 0) {
-    //     console.log(`${key}: ${value}`);
-    //     cont++;
-    //   }
-    // }
-    // if (cont == 0) {
-    //   return true;
-    // }
-    // Alert.alert(
-    //   "Ops...",
-    //   "Dados inválidos, Verifique se preencheu todos os campos!"
-    // );
-    return false;
-  };
+  
 
   return (
     <View style={styles.fields}>
       <Input
         placeholder="Placa *"
         value={plate}
-        // error={placaIsValid()}
+        error={inputIsValid(plate)}
         errorMessage={"Erro: Preencha a Placa"}
         onChangeText={(value) => {
           const placaFormated = value;
-          // setPlaca(placaFormated);
-          setPlate(value)
+          setPlate(value);
           dispatch(actions.addPlate(value));
-
         }}
         maxLength={7}
       />
@@ -105,49 +77,47 @@ export function StepTwoDataBasic() {
         onValueChange={(selectedValue, index) => {
           setBrand(index);
           dispatch(actions.addBrand(index));
-
+          setValidateBrand(selectIsValid(index));
         }}
         options={marcaOptions}
         value={brand}
-        // error={marcaIsValid()}
+        error={validateBrand}
         errorMessage={"Erro: Selecione uma Marca"}
         testID="select-brand"
       />
 
       <Select
         onValueChange={(selectedValue, index) => {
-          setModel(index)
+          setModel(index);
           dispatch(actions.addModel(index));
-
+          setValidateModel(selectIsValid(index));
         }}
         options={modeloOptions}
         value={model}
-        // error={corIsValid()}
+        error={validateModel}
         errorMessage={"Erro: Selecione um modelo"}
         testID="select-model"
-
       />
 
       <Input
         placeholder="Ano/Modelo/Fab."
         onChangeText={(value) => {
-          setYearModelFab(value)
+          setYearModelFab(value);
           dispatch(actions.addYearModelFab(value));
         }}
         value={yearModelFab}
-        // error={anoModeloFabIsValid()}
+        error={inputIsValid(yearModelFab)}
         errorMessage={"Erro: preencha o Ano/Modelo/Fab"}
       />
 
       <Input
         placeholder="Cor"
         onChangeText={(value) => {
-          setColor(value)
+          setColor(value);
           dispatch(actions.addColor(value));
-
         }}
         value={color}
-        // error={corIsValid()}
+        error={inputIsValid(color)}
         errorMessage={"Erro: Digite uma Cor"}
       />
 
@@ -159,12 +129,9 @@ export function StepTwoDataBasic() {
             status={conservationState === 1 ? "checked" : "unchecked"}
             color={colors.blue_light}
             onPress={() => {
-              setConservationState(1)
+              setConservationState(1);
               dispatch(actions.addConservationState(1));
-
-              //  setEstadoDeConservacao(1);
             }}
-          // error={estadoDeConservacaoIsValid()}
           />
           <Text style={styles.InputRadioText}>Bom</Text>
         </View>
@@ -174,26 +141,39 @@ export function StepTwoDataBasic() {
             value="Regular"
             status={conservationState === 2 ? "checked" : "unchecked"}
             onPress={() => {
-              setConservationState(2)
+              setConservationState(2);
               dispatch(actions.addConservationState(2));
             }}
-          // error={estadoDeConservacaoIsValid()}
           />
           <Text style={styles.InputRadioText}>Regular</Text>
         </View>
+
         <View style={styles.InputRadio}>
           <RadioButton
             value="Mau"
             status={conservationState === 3 ? "checked" : "unchecked"}
             onPress={() => {
-              setConservationState(3)
+              setConservationState(3);
               dispatch(actions.addConservationState(3));
             }}
           />
           <Text style={styles.InputRadioText}>Mau</Text>
         </View>
       </View>
-      <Footer validate={isValid}></Footer>
+
+      <View style={styles.footer}>
+        <BackArrowButton
+          title="Voltar"
+          icone="arrow-left"
+          onPress={previousStep}
+        />
+        <NextArrowButton
+          title="Próximo"
+          icone="arrow-right"
+          onPress={nextStep}
+          isValid={isValid}
+        />
+      </View>
     </View>
   );
 }

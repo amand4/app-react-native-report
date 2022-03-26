@@ -3,7 +3,7 @@ import uuid from "react-native-uuid";
 import { combineReducers, AnyAction } from "redux";
 
 const INITIAL_STATE = {
-  currentStep: 1,
+  currentStep: 3,
   LaudoVeicular: {
     id: uuid.v1(),
     Type: "Veiculo",

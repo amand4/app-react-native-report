@@ -5,8 +5,6 @@ import {
   Platform,
   TouchableNativeFeedback,
   Keyboard,
-  Modal,
-  Pressable,
   Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -29,7 +27,7 @@ import {
   secao,
 } from "../../../../config/constants";
 
-import { formatDate } from "../../../../utils";
+import { formatEditDate, formatNewDate } from "../../../../utils";
 import { maskRep } from "../../../../utils/maks";
 import { inputIsValid, selectIsValid } from "../../../../utils/validate";
 
@@ -71,7 +69,7 @@ export function StepOneGeneralInformation() {
   const [modalVisible, setModalVisible] = useState(false);
   const [showDateDesig, setShowDateDesignacao] = useState(false);
   const [showDateSolit, setShowSolitacao] = useState(false);
-  const [isValid, setValid] = useState(false);
+  const [isValid, setValid] = useState(true);
   const [validateCity, setValidateCity] = useState(false);
   const [validateSection, setValidateSection] = useState(false);
   const [validateExamNature, setValidateExamNature] = useState(false);
@@ -82,15 +80,14 @@ export function StepOneGeneralInformation() {
 
   const nextStep = () => {
     if (
-      rep &&
-      numberOffice &&
-      initiated &&
-      typeOfInquiry &&
-      city &&
-      director &&
-      section &&
-      expert !== "" &&
-      isValid
+      (rep && numberOffice && initiated !== "") ||
+      (typeOfInquiry &&
+        city &&
+        director &&
+        section &&
+        examNature &&
+        requestingAgency !== 0 &&
+        isValid)
     ) {
       setCurrentStep(2);
     } else {
@@ -103,7 +100,25 @@ export function StepOneGeneralInformation() {
   };
 
   const previousStep = () => {
-    navigation.navigate("VehicleSelect");
+    Alert.alert(
+      "Tem certeza que seja encerrar o formulário?",
+      "Será redirecionado para tela inicial.",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Não",
+        },
+        {
+          text: "Sim",
+          onPress: async () => {
+            navigation.navigate("VehicleSelect");
+          },
+        },
+      ]
+    );
   };
 
   const showDesignacaoDatepicker = () => {
@@ -121,12 +136,12 @@ export function StepOneGeneralInformation() {
             placeholder="Rep (xxxx) *"
             error={inputIsValid(rep)}
             errorMessage={"Erro: o formato deve ser: Rep (xxxx)"}
-            value={String(rep)}
+            value={String(reportDataHeader.Rep)}
             onChangeText={(value) => {
               const repConvertNumber = Number(value);
               setRep(value);
               dispatch(actions.addRep(repConvertNumber));
-              setValid(inputIsValid(rep));
+              //// setValid(inputIsValid(rep));
             }}
             testID="input-rep"
             keyboardType="numeric"
@@ -140,7 +155,7 @@ export function StepOneGeneralInformation() {
               const numberOfficeConvert = Number(value);
               setNumberOffice(value);
               dispatch(actions.addNumberOffice(numberOfficeConvert));
-              setValid(inputIsValid(numberOffice));
+              //// setValid(inputIsValid(numberOffice));
             }}
             value={String(numberOffice)}
             keyboardType="numeric"
@@ -155,7 +170,7 @@ export function StepOneGeneralInformation() {
             onChangeText={(value) => {
               setInitiated(value);
               dispatch(actions.addInitiated(value));
-              setValid(inputIsValid(initiated));
+              // setValid(inputIsValid(initiated));
             }}
             value={initiated}
           />
@@ -165,7 +180,6 @@ export function StepOneGeneralInformation() {
               setTypeOfInquiry(index);
               dispatch(actions.addTypeOfInquiry(index));
               setValidateTypeInquery(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={typeInquerisOptions}
             value={typeOfInquiry}
@@ -181,7 +195,7 @@ export function StepOneGeneralInformation() {
             onChangeText={(value) => {
               setNumberInquiry(value);
               dispatch(actions.addNumberInquiry(Number(value)));
-              setValid(inputIsValid(NumberInquiry));
+              // setValid(inputIsValid(NumberInquiry));
             }}
             value={String(NumberInquiry)}
             keyboardType="numeric"
@@ -192,7 +206,6 @@ export function StepOneGeneralInformation() {
               setCity(index);
               dispatch(actions.addCity(index));
               setValidateCity(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={cities}
             value={city}
@@ -206,7 +219,6 @@ export function StepOneGeneralInformation() {
               setSection(index);
               dispatch(actions.addSection(index));
               setValidateSection(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={secao}
             value={section}
@@ -220,7 +232,6 @@ export function StepOneGeneralInformation() {
               setExamNature(index);
               dispatch(actions.addExamNature(index));
               setValidateExamNature(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={naturezaExame}
             value={examNature}
@@ -234,7 +245,6 @@ export function StepOneGeneralInformation() {
               setRequestingAgency(index);
               dispatch(actions.addRequestingAgency(index));
               setValidateRequestingAgency(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={orgaoSolicitanteOptions}
             value={requestingAgency}
@@ -248,7 +258,6 @@ export function StepOneGeneralInformation() {
               setDirector(index);
               dispatch(actions.addDirector(index));
               setValidateDirector(selectIsValid(index));
-              setValid(!selectIsValid(index));
             }}
             options={directorsOptions}
             value={director}
@@ -261,9 +270,15 @@ export function StepOneGeneralInformation() {
               style={styles.button}
               onPress={showSolicitanteDatepicker}
             >
-              <Text style={styles.data}>
-                {formatDate(reportDataHeader.DataDeSolicitacao)}
-              </Text>
+              {typeof reportDataHeader.DataDeSolicitacao === "string" ? (
+                <Text style={styles.data}>
+                  {formatEditDate(reportDataHeader.DataDeSolicitacao)}
+                </Text>
+              ) : (
+                <Text style={styles.data}>
+                  {formatNewDate(reportDataHeader.DataDeSolicitacao)}
+                </Text>
+              )}
             </RectButton>
           </View>
           <View style={styles.containerData}>
@@ -272,7 +287,7 @@ export function StepOneGeneralInformation() {
               onPress={showDesignacaoDatepicker}
             >
               <Text style={styles.data}>
-                {formatDate(reportDataHeader.DataDeDesignacao)}
+                {formatNewDate(reportDataHeader.DataDeDesignacao)}
               </Text>
             </RectButton>
           </View>

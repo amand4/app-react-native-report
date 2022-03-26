@@ -68,7 +68,6 @@ export function NewReport() {
   }, []);
 
   const handleSubmit = function () {
-    console.log("testeeeeeeee");
     Alert.alert(
       "Tem certeza que seja encerrar o formulário?",
       "Será redirecionado para tela inicial.",

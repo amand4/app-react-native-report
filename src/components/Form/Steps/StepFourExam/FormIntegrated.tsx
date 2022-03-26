@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 import { InputNumber } from "../../../Inputs/InputNumber";
-import { NextArrowButton } from "../../../Buttons/NextArrowButton";
+import { NextArrowButton } from "../../../../components/Buttons/NextArrowButton";
+import { BackArrowButton } from "../../../../components/Buttons/BackArrowButton";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store/";
 
-
-import actions from '../../../../actions/todo'
+import actions from "../../../../actions/todo";
 
 import styles from "./styles";
-import colors from "../../../../styles/colors";
 import { FontAwesome } from "@expo/vector-icons";
-
 
 interface ImageData {
   uri: string;
@@ -23,17 +22,51 @@ interface ImageData {
 
 let numerosDoChassi: any = {};
 
-// interface dataAdulteredProps {
-//   onData: any;
-// }
-
 export function FormIntegrated() {
-  const [numeroDoChassi] = useState(numerosDoChassi);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const [numeroDoChassi] = useState(numerosDoChassi);
   const [images, setImage] = useState<ImageData[]>([]);
+  const [isValid, setValid] = useState(true);
+
+  const nextStep = () => {
+    if (numeroDoChassi !== {} && images.length > 0) {
+      dispatch(actions.addPiece(data));
+      numerosDoChassi = {};
+      setCurrentStep(3);
+    } else {
+      Alert.alert(
+        "Ops, informações inválidas!",
+        "Verique se preencheu todas as informações desta etapa corretamente.",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+      );
+    }
+  };
+
+  const previousStep = () => {
+    Alert.alert(
+      "Hey!",
+      "Tem certeza que deseja voltar? Os campos não serão salvos.",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "Sim", onPress: () => setCurrentStep(3) },
+      ]
+    );
+  };
+
+  const setCurrentStep = (value: number) => {
+    dispatch(actions.updateCurrentStep(value));
+  };
+
   const tipoDePeca = useSelector(
     (state: RootState) => state.reportReducer.tipoDePeca
   );
+
   const [data, setData] = useState({
     Type: tipoDePeca.peca == "1" ? "Chassi" : "Motor",
     Data: {
@@ -46,14 +79,6 @@ export function FormIntegrated() {
     },
   });
 
-  const addPeca = () => {
-    // if (isValid()) {
-    dispatch(actions.addPiece(data));
-    numerosDoChassi = {};
-    dispatch(actions.updateCurrentStep(3));
-    // }
-  };
-
   const setNumeracaoIdentificadora = () => {
     let str = "";
     for (const numero in numeroDoChassi) {
@@ -65,8 +90,7 @@ export function FormIntegrated() {
     sendToParent();
   };
 
-  const sendToParent = () => {
-  };
+  const sendToParent = () => {};
   const setPrimeiroNumero = (value: string) => {
     numeroDoChassi["n1"] = value;
 
@@ -190,6 +214,7 @@ export function FormIntegrated() {
             setPrimeiroNumero(value);
           }}
           value={numerosDoChassi.n1}
+          testID="input-chassi-1"
         />
         <Text style={styles.separador}> - </Text>
 
@@ -199,6 +224,7 @@ export function FormIntegrated() {
             setSegundoNumero(value);
           }}
           value={numerosDoChassi.n2}
+          testID="input-chassi-2"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -207,6 +233,7 @@ export function FormIntegrated() {
             setTerceiroNumero(value);
           }}
           value={numerosDoChassi.n3}
+          testID="input-chassi-3"
         />
       </View>
       <View style={styles.headerFormContent}>
@@ -220,6 +247,7 @@ export function FormIntegrated() {
             setQuartoNumero(value);
           }}
           value={numerosDoChassi.n4}
+          testID="input-chassi-4"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -228,6 +256,7 @@ export function FormIntegrated() {
             setQuintoNumero(value);
           }}
           value={numerosDoChassi.n5}
+          testID="input-chassi-5"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -236,6 +265,7 @@ export function FormIntegrated() {
             setSextoNumero(value);
           }}
           value={numerosDoChassi.n6}
+          testID="input-chassi-6"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -244,6 +274,7 @@ export function FormIntegrated() {
             setSetimoNumero(value);
           }}
           value={numerosDoChassi.n7}
+          testID="input-chassi-7"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -252,6 +283,7 @@ export function FormIntegrated() {
             setOitavoNumero(value);
           }}
           value={numerosDoChassi.n8}
+          testID="input-chassi-8"
         />
       </View>
       <View style={styles.headerFormContent}>
@@ -265,6 +297,7 @@ export function FormIntegrated() {
             setNonoNumero(value);
           }}
           value={numerosDoChassi.n9}
+          testID="input-chassi-9"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -273,6 +306,7 @@ export function FormIntegrated() {
             setDecimoNumero(value);
           }}
           value={numerosDoChassi.n10}
+          testID="input-chassi-10"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -281,6 +315,7 @@ export function FormIntegrated() {
             setDecPrimeiroNumero(value);
           }}
           value={numerosDoChassi.n11}
+          testID="input-chassi-11"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -289,6 +324,7 @@ export function FormIntegrated() {
             setDecSegundoNumero(value);
           }}
           value={numerosDoChassi.n12}
+          testID="input-chassi-12"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -297,6 +333,7 @@ export function FormIntegrated() {
             setDecTerceiroNumero(value);
           }}
           value={numerosDoChassi.n13}
+          testID="input-chassi-12"
         />
       </View>
 
@@ -307,6 +344,7 @@ export function FormIntegrated() {
             setDecQuartoNumero(value);
           }}
           value={numerosDoChassi.n14}
+          testID="input-chassi-14"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -315,6 +353,7 @@ export function FormIntegrated() {
             setDecQuintoNumero(value);
           }}
           value={numerosDoChassi.n15}
+          testID="input-chassi-15"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -323,6 +362,7 @@ export function FormIntegrated() {
             setDecSextoNumero(value);
           }}
           value={numerosDoChassi.n16}
+          testID="input-chassi-16"
         />
         <Text style={styles.separador}> - </Text>
         <InputNumber
@@ -331,6 +371,7 @@ export function FormIntegrated() {
             setDecSetimoNumero(value);
           }}
           value={numerosDoChassi.n17}
+          testID="input-chassi-17"
         />
       </View>
       <View style={styles.container}>
@@ -341,9 +382,6 @@ export function FormIntegrated() {
               source={{ uri: localUri.uri }}
               style={styles.thumbnail}
             />
-            // <View style={styles.containerGalery}>
-            //   <ImageCard key={index} uri={localUri.uri}></ImageCard>
-            // </View>
           ))}
 
         <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
@@ -356,11 +394,20 @@ export function FormIntegrated() {
           />
         </TouchableOpacity>
       </View>
-      <NextArrowButton
-        title="Confirmar"
-        icone="arrow-right"
-        onPress={addPeca}
-      ></NextArrowButton>
+
+      <View style={styles.footer}>
+        <BackArrowButton
+          title="Voltar"
+          icone="arrow-left"
+          onPress={previousStep}
+        />
+        <NextArrowButton
+          title="Próximo"
+          icone="arrow-right"
+          onPress={nextStep}
+          isValid={isValid}
+        />
+      </View>
     </View>
   );
 }

@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Text, TouchableOpacity, Alert, View, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { useAuth } from "../../../../hooks/auth";
 
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import { InputView } from "../../../Inputs/InputView";
 import { ImageCard } from "../../../ImageCard";
-import { Footer } from "../../../Footer";
+import { NextArrowButton } from "../../../../components/Buttons/NextArrowButton";
+import { BackArrowButton } from "../../../../components/Buttons/BackArrowButton";
 
 import { RootState } from "../../../../store/";
-
-import actions from '../../../../actions/todo'
-
-
+import actions from "../../../../actions/todo";
+import report from "../../../../services/database/storage";
 
 import constants from "../../../../config/constants";
-import { formatDate } from "../../../../utils";
+import { formatNewDate } from "../../../../utils";
 import styles from "./styles";
-
 
 interface ImageData {
   uri: string;
   base64?: string;
 }
 export function StepFiveConfirmation() {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const { user } = useAuth();
+
   const todos = useSelector((state: RootState) => state);
   const laudo = { ...todos.reportReducer.LaudoVeicular };
   let piecies = laudo.Data.Veiculo.Pieces;
   const [images, setImage] = useState<ImageData[]>([]);
-  const dispatch = useDispatch();
-  const reportData = useSelector((state: RootState) => {
-    return state.reportReducer.LaudoVeicular;
-  });
+  const dataKey = `@laudos_user:${user.id}`;
 
+  const state = useSelector((state: RootState) => {
+    return state.reportReducer;
+  });
+  const reportData = state.LaudoVeicular;
 
   useEffect(() => {
     (async () => {
@@ -47,6 +52,41 @@ export function StepFiveConfirmation() {
       }
     })();
   }, []);
+
+  const setCurrentStep = (value: number) => {
+    dispatch(actions.updateCurrentStep(value));
+  };
+
+  const handleSubmit = () => {
+    if (images.length > 0) {
+    } else {
+      Alert.alert("Ops, faltou as imagens!", "Deseja adicionar?", [
+        {
+          text: "Não",
+          onPress: async () => {
+            try {
+              const response = await report.save(dataKey, state, user);
+
+              navigation.navigate("MyReports");
+              setCurrentStep(1);
+              dispatch(actions.resetState());
+            } catch (error) {
+              Alert.alert("Erro", "Não foi possível cadastrar o laudo");
+            }
+          },
+        },
+        {
+          text: "Sim",
+          onPress: () => null,
+          style: "cancel",
+        },
+      ]);
+    }
+  };
+
+  const previousStep = () => {
+    setCurrentStep(3);
+  };
 
   let openImagePickerAsync = async () => {
     let permissionResult =
@@ -76,16 +116,6 @@ export function StepFiveConfirmation() {
 
     setImage((oldState) => [...oldState, data]);
     dispatch(actions.addImageGallery(images));
-
-  };
-
-  const isValid = () => {
-    // if (images.length == 0) {
-    //   Alert.alert("Ops...", "Adicione as imagens do laudo");
-    //   return false;
-    // }
-
-    return true;
   };
 
   const RenderPieces = () => {
@@ -166,10 +196,11 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-
-                value={constants.typeInquerisOptions[laudo.Data.Cabecalho.TipoDeInquerito].label}
-
+                value={
+                  constants.typeInquerisOptions[
+                    laudo.Data.Cabecalho.TipoDeInquerito
+                  ].label
+                }
               />
             </View>
           </View>
@@ -197,8 +228,6 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-
                 value={constants.secao[laudo.Data.Cabecalho.Secao].label}
               />
             </View>
@@ -214,8 +243,9 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-                value={constants.directorsOptions[laudo.Data.Cabecalho.Diretor].label}
+                value={
+                  constants.directorsOptions[laudo.Data.Cabecalho.Diretor].label
+                }
               />
             </View>
           </View>
@@ -230,8 +260,6 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-
                 value={constants.cities[laudo.Data.Cabecalho.Cidade].label}
               />
             </View>
@@ -247,9 +275,10 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-
-                value={constants.naturezaExame[laudo.Data.Cabecalho.NaturezaDoExame].label}
+                value={
+                  constants.naturezaExame[laudo.Data.Cabecalho.NaturezaDoExame]
+                    .label
+                }
               />
             </View>
           </View>
@@ -263,9 +292,11 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-
-
-                value={constants.orgaoSolicitanteOptions[laudo.Data.Cabecalho.OrgaoSolicitante].label}
+                value={
+                  constants.orgaoSolicitanteOptions[
+                    laudo.Data.Cabecalho.OrgaoSolicitante
+                  ].label
+                }
               />
             </View>
           </View>
@@ -273,30 +304,29 @@ export function StepFiveConfirmation() {
             <View style={styles.fieldText}>
               <Text style={styles.text}>Data Des:</Text>
             </View>
-            {/* <View style={styles.field}>
+            <View style={styles.field}>
               <InputView
                 testID="input-number1"
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={formatDate(laudo.Data.Cabecalho.DataDeDesignacao)
-                }
+                value={formatNewDate(laudo.Data.Cabecalho.DataDeDesignacao)}
               />
-            </View> */}
+            </View>
           </View>
           <View style={styles.contentField}>
             <View style={styles.fieldText}>
               <Text style={styles.text}>Data Solic:</Text>
             </View>
-            {/* <View style={styles.field}>
+            <View style={styles.field}>
               <InputView
                 testID="input-number1"
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={formatDate(laudo.Data.Cabecalho.DataDeSolicitacao)}
+                value={formatNewDate(laudo.Data.Cabecalho.DataDeSolicitacao)}
               />
-            </View> */}
+            </View>
           </View>
         </View>
         <View style={styles.headerFormContent}>
@@ -327,7 +357,9 @@ export function StepFiveConfirmation() {
               placeholder=""
               editable={false}
               selectTextOnFocus={false}
-              value={constants.modeloOptions[laudo.Data.Veiculo.Data.Modelo].label}
+              value={
+                constants.modeloOptions[laudo.Data.Veiculo.Data.Modelo].label
+              }
             />
           </View>
         </View>
@@ -341,7 +373,9 @@ export function StepFiveConfirmation() {
               placeholder=""
               editable={false}
               selectTextOnFocus={false}
-              value={constants.marcaOptions[laudo.Data.Veiculo.Data.Marca].label}
+              value={
+                constants.marcaOptions[laudo.Data.Veiculo.Data.Marca].label
+              }
             />
           </View>
         </View>
@@ -376,11 +410,17 @@ export function StepFiveConfirmation() {
         </View>
         <View style={styles.field}>
           <View>
-            <Text style={styles.text}>Estado de conservação:  <Text style={styles.text}>
-              {constants.stateConservation[laudo.Data.Veiculo.Data.EstadoDeConservacao].label}
-            </Text></Text>
+            <Text style={styles.text}>
+              Estado de conservação:{" "}
+              <Text style={styles.text}>
+                {
+                  constants.stateConservation[
+                    laudo.Data.Veiculo.Data.EstadoDeConservacao
+                  ].label
+                }
+              </Text>
+            </Text>
           </View>
-
         </View>
         <View style={styles.headerFormContent}>
           <Text style={styles.header}> Tipo de Veículo</Text>
@@ -405,8 +445,12 @@ export function StepFiveConfirmation() {
       <View style={styles.containerGalery}>
         {images &&
           images.map((localUri, index) => (
-            <ImageCard testID="input-image"
-              index={index} key={index} uri={localUri.uri}></ImageCard>
+            <ImageCard
+              testID="input-image"
+              index={index}
+              key={index}
+              uri={localUri.uri}
+            ></ImageCard>
           ))}
       </View>
       <View style={styles.contentButton}>
@@ -423,7 +467,18 @@ export function StepFiveConfirmation() {
           />
         </TouchableOpacity>
       </View>
-      <Footer validate={isValid}></Footer>
+      <View style={styles.footer}>
+        <BackArrowButton
+          title="Voltar"
+          icone="arrow-left"
+          onPress={previousStep}
+        />
+        <NextArrowButton
+          title="Próximo"
+          icone="arrow-right"
+          onPress={handleSubmit}
+        />
+      </View>
     </View>
   );
 }

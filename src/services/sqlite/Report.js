@@ -23,7 +23,7 @@ db.transaction(tx => {
  *  - O resultado da Promise é o ID do registro (criado por AUTOINCREMENT)
  *  - Pode retornar erro (reject) caso exista erro no SQL ou nos parâmetros.
  */
-//  console.log(db)
+
 
 
 const create = (obj) => {

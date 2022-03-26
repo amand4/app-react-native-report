@@ -1,34 +1,65 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Alert,
-  Animated,
-  StyleSheet,
-} from "react-native";
+import { Text, View, Alert, Animated, Easing } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-// import { pieces } from "../../../../config/constants";
 import styles from "./styles";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
-import { RectButton, RectButtonProps } from "react-native-gesture-handler";
+import { RectButton } from "react-native-gesture-handler";
 
-import { AntDesign, FontAwesome, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 import { Select } from "../../../Select";
-import { Footer } from "../../../Footer";
+import { NextArrowButton } from "../../../../components/Buttons/NextArrowButton";
+import { BackArrowButton } from "../../../../components/Buttons/BackArrowButton";
+import { FinalArrowButton } from "../../../../components/Buttons/FinalArrowButton";
 
 import type { RootState } from "../../../../store/index";
 import colors from "../../../../styles/colors";
 import { pieces } from "../../../../config/constants";
 import actions from "../../../../actions/todo";
+import { selectIsValid } from "../../../../utils/validate";
+import ExpandMore from "./ExpandMore";
 
 export function StepThreeChoicePiece(): JSX.Element {
   const dispatch = useDispatch();
   const [arrayPieces, setArrayPieces] = useState([]);
   const [piece, setPiece] = useState(0);
+  const [isValid, setValid] = useState(true);
+  const [validatePiece, setValidatePiece] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const setCurrentStep = (value: number) => {
+    dispatch(actions.updateCurrentStep(value));
+  };
+
+  const nextStep = () => {
+    if (arrayPieces.length > 0 || (piece !== 0 && isValid)) {
+      setCurrentStep(4);
+    } else {
+      Alert.alert("Ops, informações inválidas!", "Selecione uma peça!", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+    }
+  };
+
+  const previousStep = () => {
+    setCurrentStep(2);
+  };
+
+  const lastStep = () => {
+    if (arrayPieces.length > 0 || (piece !== 0 && isValid)) {
+      setCurrentStep(5);
+    } else {
+      Alert.alert("Ops, informações inválidas!", "Selecione uma peça!", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+    }
+  };
 
   const piecies = useSelector((state: RootState) => {
     return state.reportReducer.LaudoVeicular.Data.Veiculo.Pieces;
@@ -60,47 +91,41 @@ export function StepThreeChoicePiece(): JSX.Element {
     ]);
   };
 
-  const isValid = () => {
-    // if (data.peca == "" && pieces.length != 0) {
-    //   return true;
-    // }
-    // if (data.peca == "") {
-    //   Alert.alert("Ops...", "Campo inválido, Selecione um tipo de peça");
-    //   return false;
-    // }
-
-    return true;
-  };
-
   const RenderPieces = () => {
     return (
       <>
         {arrayPieces.map((item: any, index: number) => (
-          <Swipeable
-            key={index}
-            overshootRight={false}
-            renderRightActions={() => (
-              <Animated.View>
-                <View>
-                  <RectButton
-                    style={styles.buttonRemove}
-                    onPress={() => handleRemove(item["Type"])}
-                  >
-                    <Feather
-                      name="trash"
-                      size={20}
-                      color={colors.white}
-                    ></Feather>
-                  </RectButton>
-                </View>
-              </Animated.View>
-            )}
-          >
-            <RectButton style={styles.containerItem}>
-              <Text style={styles.buttonText}>{item["Type"]}</Text>
-              <AntDesign name="checkcircle" style={styles.icone} />
-            </RectButton>
-          </Swipeable>
+          <View key={index}>
+            <Swipeable
+              key={index}
+              overshootRight={false}
+              renderRightActions={() => (
+                <Animated.View>
+                  <View>
+                    <RectButton
+                      style={styles.buttonRemove}
+                      onPress={() => handleRemove(item["Type"])}
+                    >
+                      <Feather
+                        name="trash"
+                        size={20}
+                        color={colors.white}
+                      ></Feather>
+                    </RectButton>
+                  </View>
+                </Animated.View>
+              )}
+            >
+              <RectButton
+                style={styles.containerItem}
+                onPress={() => handleExpandClick()}
+              >
+                <Text style={styles.buttonText}>{item["Type"]}</Text>
+                <AntDesign name="checkcircle" style={styles.icone} />
+              </RectButton>
+              <ExpandMore item={item} expand={expanded}></ExpandMore>
+            </Swipeable>
+          </View>
         ))}
       </>
     );
@@ -109,19 +134,38 @@ export function StepThreeChoicePiece(): JSX.Element {
   return (
     <View style={styles.fields}>
       <Select
-        onValueChange={(selectedValue, itemIndex) => {
-          setPiece(itemIndex);
-          dispatch(actions.addTypePiece(pieces[itemIndex].label));
+        onValueChange={(selectedValue, index) => {
+          setPiece(index);
+          dispatch(actions.addTypePiece(pieces[index].label));
+          setValidatePiece(selectIsValid(index));
         }}
         options={pieces}
         value={piece}
         errorMessage={"Erro: Selecione o Tipo de Peça"}
         testID="selec-piece"
+        error={validatePiece}
       />
 
       <RenderPieces />
 
-      <Footer validate={isValid}></Footer>
+      <View style={styles.footer}>
+        <BackArrowButton
+          title="Voltar"
+          icone="arrow-left"
+          onPress={previousStep}
+        />
+        <NextArrowButton
+          title="Próximo"
+          icone="arrow-right"
+          onPress={nextStep}
+          isValid={isValid}
+        />
+      </View>
+      <FinalArrowButton
+        title="Concluir"
+        icone="arrow-right"
+        onPress={lastStep}
+      />
     </View>
   );
 }

@@ -41,7 +41,10 @@ export const cities = [
   { value: "Pitanga", label: "Cidade: Pitanga" },
 ];
 export const typeAdulterated = [
-  { value: "Selecione um tipo de Adulteração", label: "Selecione um tipo" },
+  {
+    value: "Selecione um Tipo de Adulteração",
+    label: "Selecione um tipo de Adulteração",
+  },
   { value: "Puncionamento", label: "Metodo de Puncionamento" },
   { value: "Desbaste", label: "Metodo de Desbaste" },
   { value: "Recorte", label: "Metodo de Recorte" },
@@ -68,7 +71,10 @@ export const pieces = [
 ];
 
 export const typeNumbers = [
-  { value: "Selecione um tipo", label: "Selecione um tipo" },
+  {
+    value: "Selecione um Tipo de Numeração",
+    label: "Selecione um Tipo de Numeração",
+  },
   { value: "Adulterado", label: "Adulterado" },
   { value: "Original", label: "Original" },
   { value: "GravacaoAutorizada", label: "Gravação Autorizada" },

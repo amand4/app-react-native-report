@@ -24,19 +24,28 @@ const styles = StyleSheet.create({
     color: colors.text,
     backgroundColor: colors.white,
   },
+
   contentInputRadio: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
+
   InputRadio: {
     flexDirection: "row",
     alignItems: "center",
-    height: 30
+    height: 30,
   },
+
   InputRadioText: {
     fontSize: 14,
     color: colors.text,
+  },
 
+  footer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
   },
 });
 

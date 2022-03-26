@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   field: {
-    width: "65%"
+    width: "65%",
   },
 
   text: {
@@ -28,7 +28,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
 
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+  },
+  footer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
   },
   button: {
     backgroundColor: colors.green_light,
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   headerFormContent: {
     marginVertical: 5,
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   buttonAdd: {
     backgroundColor: colors.pupple,
@@ -107,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     marginVertical: 10,
-    width: "50%"
+    width: "50%",
   },
   buttonAddText: {
     color: colors.white,

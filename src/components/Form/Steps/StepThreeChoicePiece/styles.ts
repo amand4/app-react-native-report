@@ -7,14 +7,15 @@ const styles = StyleSheet.create({
     width: "100%",
     marginVertical: 10,
   },
+
   containerItem: {
-    width: '100%',
+    width: "100%",
     borderRadius: 4,
     height: 30,
     marginVertical: 5,
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.green_light,
     shadowColor: "#000",
     shadowOffset: {
@@ -25,8 +26,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     justifyContent: "space-between",
-
   },
+
   buttonText: {
     color: colors.white,
     fontSize: 14,
@@ -38,18 +39,30 @@ const styles = StyleSheet.create({
     backgroundColor: colors.red,
     marginTop: 8,
     borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     right: 10,
     paddingLeft: 10,
   },
+
   text: {
     color: colors.white,
     marginTop: 10,
   },
+
   icone: {
     fontSize: 20,
     color: colors.white,
+  },
+
+  footer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  fade: {
+    backgroundColor: colors.gray_dark,
   },
 });
 

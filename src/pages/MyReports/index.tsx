@@ -67,7 +67,6 @@ export function MyReports() {
   };
 
   const handleGoBack = () => {
-    console.log("volta");
     navigation.navigate("VehicleSelect");
   };
 
@@ -122,12 +121,7 @@ export function MyReports() {
       );
       report.LaudoVeicular.statusDoLaudo.sincronizado = true;
       await update(dataKey, report);
-      console.log(response.data);
     } catch (error) {
-      console.log(reporConvert);
-
-      console.log(error);
-
       Alert.alert(
         "Não foi possível enviar o laudo, verifique se os dados estão corretos!"
       );

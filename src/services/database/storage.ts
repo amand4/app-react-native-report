@@ -15,7 +15,6 @@ export const save = async (
     const indexFindReport = currentLaudos.findIndex(
       (element: any) => element.LaudoVeicular.id == state.LaudoVeicular.id
     );
-    console.log(state);
     if (!edit) {
       state.LaudoVeicular.statusDoLaudo.completo = true;
     }
