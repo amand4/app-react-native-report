@@ -93,7 +93,11 @@ interface ReportCardProps {
   data: ReportCardData;
 }
 
-export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
+export function ReportCard({
+  data,
+  ...rest
+}: ReportCardProps): JSX.Element {
+  
   return (
     <View style={styles.container} testID="reportCard-test">
       <View style={styles.content}>

@@ -30,7 +30,7 @@ import actions from "../../../../actions/todo";
 
 import styles from "./styles";
 import colors from "../../../../styles/colors";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 import { typeAdulterated, typeNumbers } from "../../../../config/constants";
 import constants from "../../../../config/constants";
@@ -584,11 +584,12 @@ export function FormAdultered() {
           style={styles.buttonNumbers}
         >
           <Text style={styles.buttonText}>Adicionar Numeração</Text>
-          <FontAwesome
-            name="camera"
-            style={styles.icone}
+
+          <MaterialIcons
+            name="add-circle"
             size={24}
-            color="black"
+            color={colors.blue_light}
+            style={styles.icone}
           />
         </TouchableOpacity>
         <View style={styles.headerFormContent}>

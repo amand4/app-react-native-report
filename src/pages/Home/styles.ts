@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import colors from "../../styles/colors";
 
 const styles = StyleSheet.create({
@@ -56,11 +56,18 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalListItem: {
-    // height: 50,
-    // backgroundColor: "red",
-    // marginHorizontal: 10,
-    // paddingHorizontal: 30,
+
+  descriptModal: {
+    fontSize: 15,
+  },
+  containeModal: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    width: 300,
+    height: 500,
+  },
+  scrollView: {
+    marginHorizontal: 20,
   },
 
   button: {

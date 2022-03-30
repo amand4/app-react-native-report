@@ -41,6 +41,7 @@ export function MyReports() {
   const [report, setReport] = useState({});
   const tokenStorageKey = "@AppAuth:token";
   const [filter, setFilter] = useState("todos");
+  const [visible, setVisible] = useState(true);
 
   const [storagedToken] = useState(
     AsyncStorage.getItem("@AppAuth:token") || ""
@@ -104,27 +105,28 @@ export function MyReports() {
   };
 
   const toSendReport = async (report: any) => {
-    const reporConvert = JSON.stringify(report);
+    if (!report.LaudoVeicular.statusDoLaudo.sincronizado) {
+      const reporConvert = JSON.stringify(report);
+      try {
+        const response = await api.post(
+          "/reports",
 
-    try {
-      const response = await api.post(
-        "/reports",
+          reporConvert,
 
-        reporConvert,
-
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-type": "Application/json",
-          },
-        }
-      );
-      report.LaudoVeicular.statusDoLaudo.sincronizado = true;
-      await update(dataKey, report);
-    } catch (error) {
-      Alert.alert(
-        "Não foi possível enviar o laudo, verifique se os dados estão corretos!"
-      );
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-type": "Application/json",
+            },
+          }
+        );
+        report.LaudoVeicular.statusDoLaudo.sincronizado = true;
+        await update(dataKey, report);
+      } catch (error) {
+        Alert.alert(
+          "Não foi possível enviar o laudo, verifique se os dados estão corretos!"
+        );
+      }
     }
   };
 
@@ -150,21 +152,9 @@ export function MyReports() {
   useEffect(() => {
     loadLaudos();
   }, []);
-
   useEffect(() => {
-    if (filter == "enviados") {
-      handleFilteredReportsSincronized(true);
-    }
-    if (filter == "incompletos") {
-      handleFilteredReportsIncomplet(false);
-    }
-    if (filter == "todos") {
-      loadLaudos();
-    }
-    if (filter == "aguardandoEnvio") {
-      handleFilteredReportsSincronized(false);
-    }
-  }, [filter, laudos]);
+    loadLaudos();
+  }, [laudos]);
 
   return (
     <View style={styles.container}>
@@ -174,19 +164,6 @@ export function MyReports() {
       <View style={styles.container}>
         <View>
           <Text style={styles.title}> Laudos </Text>
-        </View>
-        <View>
-          <View style={styles.containerFilter}>
-            <Text style={styles.titleFilter}> Filtrar: </Text>
-            <SelectString
-              onValueChange={(selectedValue) => {
-                setFilter(selectedValue);
-              }}
-              options={optionsStatusReports}
-              value={filter}
-              errorMessage={"Erro: Selecione o Tipo de numeração"}
-            />
-          </View>
         </View>
         <View style={styles.containerLegend}>
           <Text style={styles.subtitle}> Laudo </Text>

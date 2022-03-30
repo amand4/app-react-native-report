@@ -3,13 +3,13 @@ import uuid from "react-native-uuid";
 import { combineReducers, AnyAction } from "redux";
 
 const INITIAL_STATE = {
-  currentStep: 3,
+  currentStep: 5,
   LaudoVeicular: {
     id: uuid.v1(),
     Type: "Veiculo",
     Data: {
       Cabecalho: {
-        Rep: 0,
+        Rep: "",
         NrdoOficio: 0,
         Indiciado: "",
         TipoDeInquerito: 0,
@@ -168,7 +168,8 @@ const reportReducer = (state = INITIAL_STATE, action: AnyAction) => {
 
       break;
     case "RESET":
-      return INITIAL_STATE;
+      state = action.payload;
+      break;
 
     case "RESET_DATA":
       state = action.payload;

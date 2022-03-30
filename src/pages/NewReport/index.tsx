@@ -32,6 +32,7 @@ import StepsBar from "./StepsBar";
 import BtnClose from "../../components/BtnClose";
 
 import { useAuth } from "../../hooks/auth";
+import { initial_state } from "../../utils/initialState";
 
 export function NewReport() {
   const navigation = useNavigation();
@@ -44,6 +45,7 @@ export function NewReport() {
   const dispatch = useDispatch();
 
   const state = useSelector((state: RootState) => state.reportReducer);
+  console.log(state);
 
   const dataKey = `@laudos_user:${user.id}`;
   useEffect(() => {
@@ -79,7 +81,7 @@ export function NewReport() {
         {
           text: "Deletar e Sair",
           onPress: () => {
-            dispatch(resetState());
+            dispatch(resetState(initial_state));
             navigation.navigate("VehicleSelect");
           },
         },
@@ -88,7 +90,7 @@ export function NewReport() {
           onPress: async () => {
             await report.save(dataKey, state, user, true);
             navigation.navigate("VehicleSelect");
-            dispatch(resetState());
+            dispatch(resetState(initial_state));
           },
         },
       ]

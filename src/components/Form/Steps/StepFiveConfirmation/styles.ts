@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 14,
   },
+  warning: {
+    color: colors.red,
+    fontSize: 12,
+    marginVertical: 5,
+    fontWeight: "bold",
+  },
   buttonVehicle: {
     backgroundColor: colors.blue_light,
     flexDirection: "row",

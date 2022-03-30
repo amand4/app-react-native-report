@@ -130,8 +130,9 @@ export const updateCurrentStep = (todo: {}) => ({
   payload: todo,
 });
 
-export const resetState = () => ({
+export const resetState = (todo: {}) => ({
   type: "RESET",
+  payload: todo,
 });
 
 export const resetDataState = (todo: {}) => ({

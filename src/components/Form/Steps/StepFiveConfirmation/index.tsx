@@ -20,6 +20,7 @@ import report from "../../../../services/database/storage";
 import constants from "../../../../config/constants";
 import { formatNewDate } from "../../../../utils";
 import styles from "./styles";
+import { initial_state } from "../../../../utils/initialState";
 
 interface ImageData {
   uri: string;
@@ -57,30 +58,29 @@ export function StepFiveConfirmation() {
     dispatch(actions.updateCurrentStep(value));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (images.length > 0) {
-    } else {
-      Alert.alert("Ops, faltou as imagens!", "Deseja adicionar?", [
-        {
-          text: "Não",
-          onPress: async () => {
-            try {
-              const response = await report.save(dataKey, state, user);
+      try {
+        const response = await report.save(dataKey, state, user);
 
-              navigation.navigate("MyReports");
-              setCurrentStep(1);
-              dispatch(actions.resetState());
-            } catch (error) {
-              Alert.alert("Erro", "Não foi possível cadastrar o laudo");
-            }
+        navigation.navigate("MyReports");
+        setCurrentStep(1);
+        dispatch(actions.resetState(initial_state));
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível cadastrar o laudo");
+      }
+    } else {
+      Alert.alert(
+        "Ops, faltou as imagens!",
+        "Para enviar adicione pelo menos 1 foto do veículo!",
+        [
+          {
+            text: "Ok",
+            onPress: () => null,
+            style: "cancel",
           },
-        },
-        {
-          text: "Sim",
-          onPress: () => null,
-          style: "cancel",
-        },
-      ]);
+        ]
+      );
     }
   };
 
@@ -154,7 +154,7 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={reportData.Data.Cabecalho.Rep}
+                value={String(reportData.Data.Cabecalho.Rep)}
               />
             </View>
           </View>
@@ -168,7 +168,7 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={laudo.Data.Cabecalho.NrdoOficio}
+                value={String(laudo.Data.Cabecalho.NrdoOficio)}
               />
             </View>
           </View>
@@ -214,7 +214,7 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={laudo.Data.Cabecalho.NrdoInquerito}
+                value={String(laudo.Data.Cabecalho.NrdoInquerito)}
               />
             </View>
           </View>
@@ -441,6 +441,12 @@ export function StepFiveConfirmation() {
       </View>
       <View style={styles.headerFormContent}>
         <Text style={styles.header}> Galeria </Text>
+      </View>
+      <View>
+        <Text style={styles.warning}>
+          {" "}
+          obs: a primeira imagem deve ser do veiculo!
+        </Text>
       </View>
       <View style={styles.containerGalery}>
         {images &&

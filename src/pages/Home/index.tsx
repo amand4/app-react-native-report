@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Alert, Modal, Text, View, TouchableOpacity } from "react-native";
+import {
+  Alert,
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+} from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import styles from "./styles";
 import { typeVehicles } from "../../config/constants";
@@ -8,8 +17,9 @@ import { Header } from "../../components/Header";
 import { NextArrowButton } from "../../components/Buttons/NextArrowButton";
 
 import actions from "../../actions/todo";
+import type { RootState } from "../../store/index";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../hooks/auth";
 
@@ -22,17 +32,37 @@ export function VehicleSelect() {
   const [myReports, setMyReports] = useState<any[]>([]);
   const [vehicleChoice, setVehicleChoie] = useState<any>("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
+  const state = useSelector((state: RootState) => state.reportReducer);
+  const handleStart = async (value: string) => {
+    const dataKey = `@laudos_user:${user.id}`;
+    const data = await AsyncStorage.getItem(dataKey);
+    let reportsFiltered;
+    if (data) {
+      const reportsStoraged = JSON.parse(data);
+      reportsFiltered = reportsStoraged.filter(function (currentElement: any) {
+        if (
+          currentElement.LaudoVeicular.statusDoLaudo.completo == false &&
+          currentElement.LaudoVeicular.statusDoLaudo.oculto == false
+        ) {
+          return true;
+        }
+      });
 
-  const handleStart = (value: string) => {
-    dispatch(actions.addTypeVehicle(vehicleChoice));
-
-    if (myReports) {
-      setModalVisible(true);
+      setMyReports(reportsFiltered);
     }
-  };
 
+    setVehicleChoie(value);
+    dispatch(actions.addTypeVehicle(vehicleChoice));
+    if (myReports.length > 0) {
+      return setModalVisible(true);
+    }
+    setLoading(false);
+
+    return navigation.navigate("NewReport");
+  };
   const handleViewReports = () => {
     navigation.navigate("MyReports");
   };
@@ -55,7 +85,6 @@ export function VehicleSelect() {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
         >
@@ -64,33 +93,35 @@ export function VehicleSelect() {
               <View>
                 <BtnClose onPress={() => setModalVisible(false)} />
               </View>
-              {myReports.length > 0 && (
+              {myReports.length > 0 ? (
                 <>
                   <Text style={styles.modalText}>Laudos incompletos</Text>
                   <Text style={styles.modalText}>
                     Clique no qual deseja continuar:
                   </Text>
 
-                  {/* <ScrollView style={styles.modalListItem}> */}
-                  <View style={styles.modalListItem}>
-                    {myReports.map((item: any, index: number) => (
-                      <TouchableOpacity
-                        key={index}
-                        onPress={() => handleContinueReport(item)}
-                      >
-                        <Text>
-                          {" "}
-                          <Text>{index + 1} - </Text>
-                          {item.LaudoVeicular.Data.Cabecalho.Rep}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+                  <SafeAreaView style={styles.containeModal}>
+                    <ScrollView style={styles.scrollView}>
+                      {myReports.map((item: any, index: number) => (
+                        <TouchableOpacity
+                          key={index}
+                          onPress={() => handleContinueReport(item)}
+                        >
+                          <Text style={styles.descriptModal}>
+                            {" "}
+                            <Text>{index + 1} - </Text>
+                            {item.LaudoVeicular.Data.Cabecalho.Rep}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </SafeAreaView>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.modalText}>Clique para continuar</Text>
                 </>
               )}
-
-              {/* </ScrollView> */}
-              <Text style={styles.modalText}>Clique para continuar</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
@@ -106,22 +137,6 @@ export function VehicleSelect() {
       </View>
     );
   };
-
-  useEffect(() => {
-    async function loadStorageData() {
-      const dataKey = `@laudos_user:${user.id}`;
-      const data = await AsyncStorage.getItem(dataKey);
-      const reportsStoraged = data ? (JSON.parse(data) as any) : [];
-      let reportsFiltered;
-      if (reportsStoraged) {
-        reportsFiltered = await reportsStoraged.filter(
-          (item: any) => item.LaudoVeicular.statusDoLaudo.completo == false
-        );
-      }
-      setMyReports(reportsFiltered);
-    }
-    loadStorageData();
-  }, []);
 
   return (
     <>
