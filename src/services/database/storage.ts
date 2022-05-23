@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Alert } from "react-native";
+import { ReportCardData } from "../../components/ReportCard";
 
 export const save = async (
   dataKey: string,
-  state: any,
+  state: ReportCardData,
   user?: any,
   edit?: boolean
 ) => {
@@ -12,6 +13,7 @@ export const save = async (
   try {
     const laudos = await AsyncStorage.getItem(dataKey);
     const currentLaudos = laudos ? JSON.parse(laudos) : [];
+
     const indexFindReport = currentLaudos.findIndex(
       (element: any) => element.LaudoVeicular.id == state.LaudoVeicular.id
     );
@@ -24,15 +26,18 @@ export const save = async (
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(currentLaudos));
     } else {
-      await AsyncStorage.setItem(
-        dataKey,
-        JSON.stringify([...currentLaudos, state])
-      );
+      try {
+        const teste = await AsyncStorage.setItem(
+          dataKey,
+          JSON.stringify([...currentLaudos, state])
+        );
+      } catch (error) {
+      }
     }
 
     return "sucess";
   } catch (error) {
-    Alert.alert("Erro", "Não foi possível cadastrar o laudo");
+    Alert.alert("Errooo", "Não foi possível cadastrar o laudo storage");
   }
 };
 
@@ -57,7 +62,7 @@ export const update = async (dataKey: string, state: any) => {
 
     return "sucess";
   } catch (error) {
-    Alert.alert("Erro", "Não foi possível cadastrar o laudo");
+    Alert.alert("Erro", "Não foi possível atualizar o laudo");
   }
 };
 const all = {

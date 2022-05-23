@@ -45,7 +45,6 @@ export function NewReport() {
   const dispatch = useDispatch();
 
   const state = useSelector((state: RootState) => state.reportReducer);
-  console.log(state);
 
   const dataKey = `@laudos_user:${user.id}`;
   useEffect(() => {
@@ -71,7 +70,7 @@ export function NewReport() {
 
   const handleSubmit = function () {
     Alert.alert(
-      "Tem certeza que seja encerrar o formulário?",
+      "Tem certeza que deseja encerrar o formulário?",
       "Será redirecionado para tela inicial.",
       [
         {

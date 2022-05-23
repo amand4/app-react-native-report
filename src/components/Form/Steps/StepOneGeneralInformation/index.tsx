@@ -45,27 +45,35 @@ export function StepOneGeneralInformation() {
     return state.reportReducer.LaudoVeicular.Data.Cabecalho;
   });
 
-  const currentStep = useSelector(
-    (state: RootState) => state.reportReducer.currentStep
-  );
-
   const setCurrentStep = (value: number) => {
     dispatch(actions.updateCurrentStep(value));
   };
 
-  const [rep, setRep] = useState("");
-  const [numberOffice, setNumberOffice] = useState("");
-  const [initiated, setInitiated] = useState("");
-  const [typeOfInquiry, setTypeOfInquiry] = useState(0);
-  const [NumberInquiry, setNumberInquiry] = useState("");
-  const [city, setCity] = useState(0);
-  const [director, setDirector] = useState(0);
-  const [section, setSection] = useState(0);
+  const [rep, setRep] = useState(reportDataHeader.Rep);
+  const [numberOffice, setNumberOffice] = useState(reportDataHeader.NrdoOficio);
+  const [initiated, setInitiated] = useState(reportDataHeader.Indiciado);
+  const [typeOfInquiry, setTypeOfInquiry] = useState(
+    reportDataHeader.TipoDeInquerito
+  );
+  const [numberInquiry, setNumberInquiry] = useState(
+    reportDataHeader.NrdoInquerito
+  );
+  const [city, setCity] = useState(reportDataHeader.Cidade);
+  const [director, setDirector] = useState(reportDataHeader.Diretor);
+  const [section, setSection] = useState(reportDataHeader.Secao);
   const [expert, setExpert] = useState(user.id);
-  const [examNature, setExamNature] = useState(0);
-  const [dateDesignation, setDateDesignation] = useState(new Date());
-  const [dateRequest, setDateRequest] = useState(new Date());
-  const [requestingAgency, setRequestingAgency] = useState(0);
+  const [examNature, setExamNature] = useState(
+    reportDataHeader.NaturezaDoExame
+  );
+  const [dateDesignation, setDateDesignation] = useState(
+    reportDataHeader.DataDeDesignacao
+  );
+  const [dateRequest, setDateRequest] = useState(
+    reportDataHeader.DataDeSolicitacao
+  );
+  const [requestingAgency, setRequestingAgency] = useState(
+    reportDataHeader.OrgaoSolicitante
+  );
   const [modalVisible, setModalVisible] = useState(false);
   const [showDateDesig, setShowDateDesignacao] = useState(false);
   const [showDateSolit, setShowSolitacao] = useState(false);
@@ -80,28 +88,30 @@ export function StepOneGeneralInformation() {
 
   const nextStep = () => {
     if (
-      (rep && numberOffice && initiated !== "") ||
-      (typeOfInquiry &&
-        city &&
-        director &&
-        section &&
-        examNature &&
-        requestingAgency !== 0 &&
-        isValid)
+      rep &&
+      numberOffice &&
+      initiated !== "" &&
+      typeOfInquiry &&
+      city &&
+      director &&
+      section &&
+      examNature &&
+      requestingAgency !== 0 &&
+      isValid
     ) {
       setCurrentStep(2);
     } else {
       Alert.alert(
         "Ops, informações inválidas!",
-        "Verique se preencheu todas as informações desta etapa corretamente.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+        "Verifique se preencheu todas as informações desta etapa corretamente.",
+        [{ text: "OK" }]
       );
     }
   };
 
   const previousStep = () => {
     Alert.alert(
-      "Tem certeza que seja encerrar o formulário?",
+      "Tem certeza que deseja encerrar o formulário?",
       "Será redirecionado para tela inicial.",
       [
         {
@@ -150,14 +160,14 @@ export function StepOneGeneralInformation() {
           <Input
             placeholder="Ofício **"
             errorMessage={"Erro: o número do Ofício é obrigatório"}
-            error={inputIsValid(numberOffice)}
+            error={inputIsValid(String(numberOffice))}
             onChangeText={(value) => {
               const numberOfficeConvert = Number(value);
               setNumberOffice(value);
               dispatch(actions.addNumberOffice(numberOfficeConvert));
               //// setValid(inputIsValid(numberOffice));
             }}
-            value={String(numberOffice)}
+            value={String(reportDataHeader.NrdoOficio)}
             keyboardType="numeric"
             testID="input-office"
           />
@@ -172,7 +182,7 @@ export function StepOneGeneralInformation() {
               dispatch(actions.addInitiated(value));
               // setValid(inputIsValid(initiated));
             }}
-            value={initiated}
+            value={reportDataHeader.Indiciado}
           />
 
           <Select
@@ -182,7 +192,7 @@ export function StepOneGeneralInformation() {
               setValidateTypeInquery(selectIsValid(index));
             }}
             options={typeInquerisOptions}
-            value={typeOfInquiry}
+            value={reportDataHeader.TipoDeInquerito}
             error={validateTypeInquery}
             errorMessage={"Erro: Selecione o Tipo de Inquerito"}
             testID="select-typeOfInquery"
@@ -190,14 +200,14 @@ export function StepOneGeneralInformation() {
 
           <Input
             placeholder="Inquerito"
-            error={inputIsValid(NumberInquiry)}
+            error={inputIsValid(String(numberInquiry))}
             errorMessage={"Erro: preencha o número do Inquerito"}
             onChangeText={(value) => {
               setNumberInquiry(value);
               dispatch(actions.addNumberInquiry(Number(value)));
               // setValid(inputIsValid(NumberInquiry));
             }}
-            value={String(NumberInquiry)}
+            value={String(reportDataHeader.NrdoInquerito)}
             keyboardType="numeric"
           />
 
@@ -208,7 +218,7 @@ export function StepOneGeneralInformation() {
               setValidateCity(selectIsValid(index));
             }}
             options={cities}
-            value={city}
+            value={reportDataHeader.Cidade}
             error={validateCity}
             errorMessage={"Erro: Selecione uma Cidade"}
             testID="select-city"
@@ -221,7 +231,7 @@ export function StepOneGeneralInformation() {
               setValidateSection(selectIsValid(index));
             }}
             options={secao}
-            value={section}
+            value={reportDataHeader.Secao}
             error={validateSection}
             errorMessage={"Erro: Selecione uma Seção"}
             testID="select-section"
@@ -234,7 +244,7 @@ export function StepOneGeneralInformation() {
               setValidateExamNature(selectIsValid(index));
             }}
             options={naturezaExame}
-            value={examNature}
+            value={reportDataHeader.NaturezaDoExame}
             error={validateExamNature}
             errorMessage={"Erro: Selecione a Natureza de Exame"}
             testID="select-natureExam"
@@ -247,7 +257,7 @@ export function StepOneGeneralInformation() {
               setValidateRequestingAgency(selectIsValid(index));
             }}
             options={orgaoSolicitanteOptions}
-            value={requestingAgency}
+            value={reportDataHeader.OrgaoSolicitante}
             error={validateRequestingAgency}
             errorMessage={"Erro: Selecione um Órgão Solicitante"}
             testID="select-typeRequestingAgency"
@@ -260,7 +270,7 @@ export function StepOneGeneralInformation() {
               setValidateDirector(selectIsValid(index));
             }}
             options={directorsOptions}
-            value={director}
+            value={reportDataHeader.Diretor}
             error={validateDirector}
             errorMessage={"Erro: Selecione um Diretor"}
             testID="select-director"

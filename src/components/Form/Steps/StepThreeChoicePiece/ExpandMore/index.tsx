@@ -10,7 +10,7 @@ export default function ExpandMore({ item, expand }: any) {
       <View style={expand === true ? styles.container : styles.containerHide}>
         <View style={styles.title}>
           <Text style={styles.title}>
-            Peça: <Text style={styles.describeIntegrated}>Adulterada</Text>
+            Peça: <Text style={styles.describeIntegrated}>Integro</Text>
           </Text>
           <Text> Chassi: {item.Data["Integro"].Chassi.Numero}</Text>
         </View>

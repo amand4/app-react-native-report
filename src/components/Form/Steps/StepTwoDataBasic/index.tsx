@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, Alert } from "react-native";
 import { RadioButton } from "react-native-paper";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
 import { marcaOptions, modeloOptions } from "../../../../config/constants";
@@ -19,20 +19,30 @@ import { BackArrowButton } from "../../../../components/Buttons/BackArrowButton"
 import actions from "../../../../actions/todo";
 import { inputIsValid, selectIsValid } from "../../../../utils/validate";
 
+import type { RootState } from "../../../../store/index";
+
 export function StepTwoDataBasic() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const [plate, setPlate] = useState("");
-  const [model, setModel] = useState(0);
-  const [brand, setBrand] = useState(0);
-  const [yearModelFab, setYearModelFab] = useState("");
-  const [color, setColor] = useState("");
-  const [conservationState, setConservationState] = useState(0);
+  const reportDataVehicle = useSelector((state: RootState) => {
+    return state.reportReducer.LaudoVeicular.Data.Veiculo.Data;
+  });
+
+  const [plate, setPlate] = useState(reportDataVehicle.Placa);
+  const [model, setModel] = useState(reportDataVehicle.Modelo);
+  const [brand, setBrand] = useState(reportDataVehicle.Marca);
+  const [yearModelFab, setYearModelFab] = useState(
+    reportDataVehicle.AnoModeloFab
+  );
+  const [color, setColor] = useState(reportDataVehicle.Cor);
+  const [conservationState, setConservationState] = useState(
+    reportDataVehicle.EstadoDeConservacao
+  );
   const [isValid, setValid] = useState(true);
   const [validateBrand, setValidateBrand] = useState(false);
   const [validateModel, setValidateModel] = useState(false);
-    useState(false);
+  useState(false);
 
   const setCurrentStep = (value: number) => {
     dispatch(actions.updateCurrentStep(value));
@@ -40,15 +50,20 @@ export function StepTwoDataBasic() {
 
   const nextStep = () => {
     if (
-      (plate && yearModelFab && color !== "") ||
-      (model && brand && conservationState !== 0 && isValid)
+      plate &&
+      yearModelFab &&
+      color !== "" &&
+      model &&
+      brand &&
+      conservationState !== 0 &&
+      isValid
     ) {
       setCurrentStep(3);
     } else {
       Alert.alert(
         "Ops, informações inválidas!",
-        "Verique se preencheu todas as informações desta etapa corretamente.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+        "Verifique se preencheu todas as informações desta etapa corretamente.",
+        [{ text: "OK" }]
       );
     }
   };
@@ -56,7 +71,6 @@ export function StepTwoDataBasic() {
   const previousStep = () => {
     setCurrentStep(1);
   };
-  
 
   return (
     <View style={styles.fields}>

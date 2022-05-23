@@ -2,3 +2,7 @@
 node_modules
 # test
 coverage
+
+.expo/web/cache/development/babel-loader/
+
+backup-19--05.zip

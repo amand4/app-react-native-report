@@ -8,10 +8,10 @@ export const initial_state = {
     Data: {
       Cabecalho: {
         Rep: "",
-        NrdoOficio: 0,
+        NrdoOficio: "",
         Indiciado: "",
         TipoDeInquerito: 0,
-        NrdoInquerito: 0,
+        NrdoInquerito: "",
         Secao: 0,
         Diretor: 0,
         Cidade: 0,

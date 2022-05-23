@@ -36,6 +36,7 @@ import { typeAdulterated, typeNumbers } from "../../../../config/constants";
 import constants from "../../../../config/constants";
 import { selectIsValid } from "../../../../utils/validate";
 import ExpandMore from "./ExpandMore";
+import * as FileSystem from "expo-file-system";
 
 interface ImageData {
   uri: string;
@@ -64,7 +65,7 @@ export function FormAdultered() {
     (state: RootState) => state.reportReducer.tipoDePeca
   );
   const [data, setData] = useState({
-    Type: tipoDePeca.peca == "1" ? "Chassi" : "Motor",
+    Type: tipoDePeca.peca,
     Data: {
       Adulterado: {
         Type: constants.typeAdulterated[metodo].label,
@@ -77,25 +78,39 @@ export function FormAdultered() {
     },
   });
 
+  const handleSave = async (objImage: ImageData) => {
+    const timestamp = new Date().getTime();
+
+    if (objImage.base64) {
+      const fileUri = FileSystem.documentDirectory + `photo${timestamp}`;
+      const options = { encoding: FileSystem.EncodingType.UTF8 };
+      await FileSystem.writeAsStringAsync(fileUri, objImage.base64);
+
+      objImage.base64 = `photo${timestamp}`;
+      setImage((oldState) => [...oldState, objImage]);
+    }
+  
+  };
+
   const handleAddNewNumber = () => {
     if (
       numeracaoDoChassi !== {} &&
       images.length > 0 &&
       data.Data.Adulterado.Data.NumeracaoIdentificadora.length > 0
     ) {
-      const dataNumber = {
-        Type: constants.typeNumbers[tipoNumeracao].label,
-        Data: {
-          Numero: newNumber,
-          Imagens: images,
-        },
-      };
+    const dataNumber = {
+      Type: constants.typeNumbers[tipoNumeracao].label,
+      Data: {
+        Numero: newNumber,
+        Imagens: images,
+      },
+    };
 
-      data.Data.Adulterado.Data.NumeracaoIdentificadora.push(dataNumber);
-      setData(data);
-      dispatch(actions.addPiece(data));
-      setNumeracaoChassi({});
-      setImage([]);
+    data.Data.Adulterado.Data.NumeracaoIdentificadora.push(dataNumber);
+    setData(data);
+    // dispatch(actions.addPiece(data));
+    setNumeracaoChassi({});
+    setImage([]);
     } else {
       Alert.alert(
         "Ops, informações inválidas!",
@@ -111,11 +126,12 @@ export function FormAdultered() {
 
   const nextStep = () => {
     if (data.Data.Adulterado.Data.NumeracaoIdentificadora.length > 0) {
+      dispatch(actions.addPiece(data));
       setCurrentStep(3);
     } else {
       Alert.alert(
         "Ops, informações inválidas!",
-        "Verique se preencheu todas as informações desta etapa corretamente.",
+        "Verifique se preencheu todas as informações desta etapa corretamente.",
         [{ text: "OK" }]
       );
     }
@@ -325,8 +341,9 @@ export function FormAdultered() {
     };
 
     // data.Data.Integro.Chassi.Imagens.push(pickerResult.base64);
+    if (dataImage.base64) handleSave(dataImage);
 
-    setImage((oldState) => [...oldState, dataImage]);
+    // setImage((oldState) => [...oldState, dataImage]);
   };
 
   return (

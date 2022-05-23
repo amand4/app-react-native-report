@@ -7,23 +7,29 @@ export const typeInquerisOptions = [
   { value: "Policial", label: "Tipo de inquérito: Policial" },
 ];
 export const orgaoSolicitanteOptions = [
-  { value: "Selecione um Órgão Solicitante", label: "Selecione um tipo" },
+  {
+    value: "Selecione um Órgão Solicitante",
+    label: "Selecione um Órgão Solicitante",
+  },
   { value: "Fórum", label: "Órgão Solicitante: Fórum" },
-  { value: "DS 14º", label: "Órgão Solicitante: DS 14º" },
+  {
+    value: "45.ª Del. POLÍCIA DE PITANGA",
+    label: "Órgão Solicitante: DS 14º",
+  },
 ];
 export const directorsOptions = [
-  { value: "Selecione um Diretor", label: "Selecione um tipo" },
+  { value: "Selecione um Diretor", label: "Selecione um Diretor" },
   { value: "Jose Roberto", label: "Diretor: Jose Roberto" },
   { value: "Paulo Silva", label: "Diretor: Paulo Silva" },
 ];
 export const modeloOptions = [
-  { value: "Selecione um Modelo", label: "Selecione um tipo" },
+  { value: "Selecione um Modelo", label: "Selecione um Modelo" },
   { value: "CG 160 Fan", label: "Modelo: CG 160 Fan" },
   { value: "CG 160 Titan", label: "Modelo: CG 160 Titan" },
   { value: "Biz 110i", label: "Modelo: Biz 110i" },
 ];
 export const marcaOptions = [
-  { value: "Selecione uma Marca", label: "Selecione um tipo" },
+  { value: "Selecione uma Marca", label: "Selecione uma Marca" },
   { value: "Honda", label: "Marca: Honda" },
   { value: "Yamaha", label: "Marca: Yamaha" },
   { value: "Suzuki", label: "Marca: Suzuki" },
@@ -51,21 +57,24 @@ export const typeAdulterated = [
   { value: "Outro", label: "Outro" },
 ];
 export const naturezaExame = [
-  { value: "Selecione a Natureza de Exame", label: "Selecione um tipo" },
+  {
+    value: "Adulteracao no chassi",
+    label: "Selecione a Natureza de Exame",
+  },
   {
     value: "Adulteracao no chassi",
     label: "Nat. do Exame: Adulteracao no chassi",
   },
 ];
 export const secao = [
-  { value: "Selecione uma Seção", label: "Selecione um tipo" },
+  { value: "Selecione uma Seção", label: "Selecione uma Seção" },
   { value: "Guarapuava", label: "Seção de Guarapuava" },
   { value: "Turvo", label: "Seção de Turvo" },
   { value: "Pitanga", label: "Seção de Pitanga" },
 ];
 
 export const pieces = [
-  { value: "Selecione uma Peça", label: "Selecione um tipo" },
+  { value: "Selecione uma Peça", label: "Selecione uma Peça" },
   { value: "Chassi", label: "Chassi" },
   { value: "Motor", label: "Motor" },
 ];

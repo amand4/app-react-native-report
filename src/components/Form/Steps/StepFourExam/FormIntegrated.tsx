@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
 
 import { InputNumber } from "../../../Inputs/InputNumber";
 import { NextArrowButton } from "../../../../components/Buttons/NextArrowButton";
@@ -14,6 +13,7 @@ import actions from "../../../../actions/todo";
 
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
 
 interface ImageData {
   uri: string;
@@ -24,11 +24,22 @@ let numerosDoChassi: any = {};
 
 export function FormIntegrated() {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const [numeroDoChassi] = useState(numerosDoChassi);
   const [images, setImage] = useState<ImageData[]>([]);
   const [isValid, setValid] = useState(true);
+
+  const handleSave = async (objImage: ImageData) => {
+    const timestamp = new Date().getTime();
+
+    if (objImage.base64) {
+      const fileUri = FileSystem.documentDirectory + `photo${timestamp}`;
+      const options = { encoding: FileSystem.EncodingType.UTF8 };
+      await FileSystem.writeAsStringAsync(fileUri, objImage.base64);
+      data.Data.Integro.Chassi.Imagens.push(`photo${timestamp}`);
+      setImage((oldState) => [...oldState, objImage]);
+    }
+  };
 
   const nextStep = () => {
     if (numeroDoChassi !== {} && images.length > 0) {
@@ -39,7 +50,7 @@ export function FormIntegrated() {
       Alert.alert(
         "Ops, informações inválidas!",
         "Verique se preencheu todas as informações desta etapa corretamente.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+        [{ text: "OK" }]
       );
     }
   };
@@ -68,7 +79,7 @@ export function FormIntegrated() {
   );
 
   const [data, setData] = useState({
-    Type: tipoDePeca.peca == "1" ? "Chassi" : "Motor",
+    Type: tipoDePeca.peca,
     Data: {
       Integro: {
         Chassi: {
@@ -87,10 +98,8 @@ export function FormIntegrated() {
       }
     }
     data.Data.Integro.Chassi.Numero = str;
-    sendToParent();
   };
 
-  const sendToParent = () => {};
   const setPrimeiroNumero = (value: string) => {
     numeroDoChassi["n1"] = value;
 
@@ -185,10 +194,7 @@ export function FormIntegrated() {
       base64: pickerResult.base64,
     };
 
-    data.Data.Integro.Chassi.Imagens.push(pickerResult.base64);
-
-    setImage((oldState) => [...oldState, dataImage]);
-    sendToParent();
+    if (dataImage.base64) handleSave(dataImage);
   };
 
   return (

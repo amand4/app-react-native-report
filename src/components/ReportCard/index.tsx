@@ -35,7 +35,7 @@ export interface ReportCardData {
           Cor: string;
           EstadoDeConservacao: string;
         };
-        Pecas: [
+        Pieces: [
           {
             Type: string;
             Data: {
@@ -93,11 +93,7 @@ interface ReportCardProps {
   data: ReportCardData;
 }
 
-export function ReportCard({
-  data,
-  ...rest
-}: ReportCardProps): JSX.Element {
-  
+export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
   return (
     <View style={styles.container} testID="reportCard-test">
       <View style={styles.content}>

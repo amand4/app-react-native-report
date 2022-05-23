@@ -96,7 +96,7 @@ export const addTypePiece = (todo: string) => ({
   type: "ADD_TYPE_PIECE",
   payload: todo,
 });
-export const addImageGallery = (todo: {}) => ({
+export const addImageGallery = (todo: string) => ({
   type: "ADD_IMAGES",
   payload: todo,
 });

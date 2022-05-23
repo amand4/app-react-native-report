@@ -63,6 +63,36 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   containerFilter: {},
+  containerMessageConection: {
+    backgroundColor: colors.red,
+    padding: 16,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    maxHeight: 60,
+  },
+  containerMessageConectionText: {
+    color: "#fff",
+  },
+  containerMessageConectionTextTitle: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  icon: {
+    paddingRight: 10,
+  },
+
+  containerMessageConectionSucess: {
+    backgroundColor: colors.green_light,
+    padding: 16,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    maxHeight: 60,
+  },
+  buttonAcitions: {
+    flex: 1,
+  },
 });
 
 export default styles;

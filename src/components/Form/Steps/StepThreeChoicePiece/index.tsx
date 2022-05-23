@@ -23,11 +23,15 @@ import ExpandMore from "./ExpandMore";
 
 export function StepThreeChoicePiece(): JSX.Element {
   const dispatch = useDispatch();
-  const [arrayPieces, setArrayPieces] = useState([]);
+  const [arrayPieces, setArrayPieces] = useState<string[]>([]);
   const [piece, setPiece] = useState(0);
   const [isValid, setValid] = useState(true);
   const [validatePiece, setValidatePiece] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+  const piecies = useSelector((state: RootState) => {
+    return state.reportReducer.LaudoVeicular.Data.Veiculo.Pieces;
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -38,12 +42,25 @@ export function StepThreeChoicePiece(): JSX.Element {
   };
 
   const nextStep = () => {
-    if (arrayPieces.length > 0 || (piece !== 0 && isValid)) {
-      setCurrentStep(4);
-    } else {
+    if (arrayPieces.length > 0) {
+      arrayPieces.map((item: any) => {
+        if (item.Type == pieces[piece].label) {
+          Alert.alert(
+            "Ops!!",
+            "Peça já cadastrada! Escolha outra para realizar o exame.",
+            [{ text: "OK" }]
+          );
+          return false;
+        }
+        setCurrentStep(4);
+        return true;
+      });
+    } else if (pieces[piece].label == "Selecione uma Peça") {
       Alert.alert("Ops, informações inválidas!", "Selecione uma peça!", [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: "OK" },
       ]);
+    } else {
+      setCurrentStep(4);
     }
   };
 
@@ -52,21 +69,15 @@ export function StepThreeChoicePiece(): JSX.Element {
   };
 
   const lastStep = () => {
-    if (arrayPieces.length > 0 || (piece !== 0 && isValid)) {
+    if (arrayPieces.length >= 2 || (piece !== 0 && isValid)) {
+      dispatch(actions.addTypePiece(pieces[piece].label));
       setCurrentStep(5);
     } else {
       Alert.alert("Ops, informações inválidas!", "Selecione uma peça!", [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: "OK" },
       ]);
     }
   };
-
-  const piecies = useSelector((state: RootState) => {
-    return state.reportReducer.LaudoVeicular.Data.Veiculo.Pieces;
-  });
-  const state = useSelector((state: RootState) => {
-    return state.reportReducer;
-  });
 
   useEffect(() => {
     setArrayPieces(piecies);
@@ -83,6 +94,7 @@ export function StepThreeChoicePiece(): JSX.Element {
         onPress: async () => {
           try {
             dispatch(actions.removePiece(typeNumber));
+            arrayPieces.filter((obj: any) => obj["Type"] != typeNumber);
           } catch (error) {
             Alert.alert("Não foi possível remover!");
           }
@@ -136,6 +148,7 @@ export function StepThreeChoicePiece(): JSX.Element {
       <Select
         onValueChange={(selectedValue, index) => {
           setPiece(index);
+
           dispatch(actions.addTypePiece(pieces[index].label));
           setValidatePiece(selectIsValid(index));
         }}

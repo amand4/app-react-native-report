@@ -3,17 +3,17 @@ import uuid from "react-native-uuid";
 import { combineReducers, AnyAction } from "redux";
 
 const INITIAL_STATE = {
-  currentStep: 5,
+  currentStep: 1,
   LaudoVeicular: {
     id: uuid.v1(),
     Type: "Veiculo",
     Data: {
       Cabecalho: {
         Rep: "",
-        NrdoOficio: 0,
+        NrdoOficio: "",
         Indiciado: "",
         TipoDeInquerito: 0,
-        NrdoInquerito: 0,
+        NrdoInquerito: "",
         Secao: 0,
         Diretor: 0,
         Cidade: 0,
@@ -34,7 +34,7 @@ const INITIAL_STATE = {
           EstadoDeConservacao: 0,
         },
         Pieces: [],
-        Gallery: [],
+        Gallery: [] as any,
       },
     },
     statusDoLaudo: {
@@ -121,7 +121,21 @@ const reportReducer = (state = INITIAL_STATE, action: AnyAction) => {
       state.tipoDePeca.peca = action.payload;
       break;
     case "ADD_IMAGES":
-      state.LaudoVeicular.Data.Veiculo.Gallery = action.payload;
+      return {
+        ...state,
+        LaudoVeicular: {
+          ...state.LaudoVeicular,
+          Data: {
+            ...state.LaudoVeicular.Data,
+            Veiculo: {
+              ...state.LaudoVeicular.Data.Veiculo,
+              Gallery: state.LaudoVeicular.Data.Veiculo.Gallery.concat(
+                action.payload
+              ),
+            },
+          },
+        },
+      };
       break;
     case "REMOVE_PIECE":
       return {

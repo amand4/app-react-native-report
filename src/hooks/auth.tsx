@@ -24,6 +24,11 @@ interface User {
   name: string;
   password: string;
 }
+interface Tpo {
+  id: string;
+  name: string;
+  password: string;
+}
 interface CallbackType {
   onError: (value: string) => void;
   onSuccess: (value: Record<string, any>) => void;

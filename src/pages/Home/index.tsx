@@ -30,12 +30,11 @@ export function VehicleSelect() {
 
   const dispatch = useDispatch();
   const [myReports, setMyReports] = useState<any[]>([]);
-  const [vehicleChoice, setVehicleChoie] = useState<any>("");
+  const [vehicleChoice, setVehicleChoie] = useState<any>("Moto");
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
-  const state = useSelector((state: RootState) => state.reportReducer);
   const handleStart = async (value: string) => {
     const dataKey = `@laudos_user:${user.id}`;
     const data = await AsyncStorage.getItem(dataKey);
@@ -161,6 +160,8 @@ export function VehicleSelect() {
                 icone={icone}
                 available={available}
                 onPress={() => {
+                  setVehicleChoie(title);
+
                   handleStart(title);
                 }}
               />

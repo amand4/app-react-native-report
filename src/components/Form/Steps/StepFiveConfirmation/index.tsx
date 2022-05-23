@@ -21,9 +21,11 @@ import constants from "../../../../config/constants";
 import { formatNewDate } from "../../../../utils";
 import styles from "./styles";
 import { initial_state } from "../../../../utils/initialState";
+import * as FileSystem from "expo-file-system";
 
 interface ImageData {
-  uri: string;
+  id: ImagePicker.ImageInfo;
+  uri?: string;
   base64?: string;
 }
 export function StepFiveConfirmation() {
@@ -36,7 +38,7 @@ export function StepFiveConfirmation() {
   let piecies = laudo.Data.Veiculo.Pieces;
   const [images, setImage] = useState<ImageData[]>([]);
   const dataKey = `@laudos_user:${user.id}`;
-
+  const [imagesLaudos, setImageLaudos] = useState<ImageData[]>([]);
   const state = useSelector((state: RootState) => {
     return state.reportReducer;
   });
@@ -60,15 +62,14 @@ export function StepFiveConfirmation() {
 
   const handleSubmit = async () => {
     if (images.length > 0) {
-      try {
-        const response = await report.save(dataKey, state, user);
-
-        navigation.navigate("MyReports");
-        setCurrentStep(1);
-        dispatch(actions.resetState(initial_state));
-      } catch (error) {
-        Alert.alert("Erro", "Não foi possível cadastrar o laudo");
-      }
+    try {
+      const response = await report.save(dataKey, state, user);
+      navigation.navigate("MyReports");
+      setCurrentStep(1);
+      dispatch(actions.resetState(initial_state));
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível cadastrar o laudo cmponete");
+    }
     } else {
       Alert.alert(
         "Ops, faltou as imagens!",
@@ -86,6 +87,19 @@ export function StepFiveConfirmation() {
 
   const previousStep = () => {
     setCurrentStep(3);
+  };
+
+  const handleSave = async (objImage: ImageData) => {
+    const timestamp = new Date().getTime();
+
+    if (objImage.base64) {
+      const fileUri =
+        FileSystem.documentDirectory + `photo-gallery${timestamp}`;
+      const options = { encoding: FileSystem.EncodingType.UTF8 };
+      await FileSystem.writeAsStringAsync(fileUri, objImage.base64);
+      setImage((oldState) => [...oldState, objImage]);
+      dispatch(actions.addImageGallery(`photo-gallery${timestamp}`));
+    }
   };
 
   let openImagePickerAsync = async () => {
@@ -108,14 +122,13 @@ export function StepFiveConfirmation() {
       return;
     }
 
-    const data = {
+    const dataImage = {
       id: pickerResult,
       uri: pickerResult.uri,
       base64: pickerResult.base64,
     };
 
-    setImage((oldState) => [...oldState, data]);
-    dispatch(actions.addImageGallery(images));
+    if (dataImage.base64) handleSave(dataImage);
   };
 
   const RenderPieces = () => {
@@ -199,7 +212,7 @@ export function StepFiveConfirmation() {
                 value={
                   constants.typeInquerisOptions[
                     laudo.Data.Cabecalho.TipoDeInquerito
-                  ].label
+                  ].value
                 }
               />
             </View>
@@ -228,7 +241,7 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={constants.secao[laudo.Data.Cabecalho.Secao].label}
+                value={constants.secao[laudo.Data.Cabecalho.Secao].value}
               />
             </View>
           </View>
@@ -244,7 +257,7 @@ export function StepFiveConfirmation() {
                 editable={false}
                 selectTextOnFocus={false}
                 value={
-                  constants.directorsOptions[laudo.Data.Cabecalho.Diretor].label
+                  constants.directorsOptions[laudo.Data.Cabecalho.Diretor].value
                 }
               />
             </View>
@@ -260,7 +273,7 @@ export function StepFiveConfirmation() {
                 placeholder=""
                 editable={false}
                 selectTextOnFocus={false}
-                value={constants.cities[laudo.Data.Cabecalho.Cidade].label}
+                value={constants.cities[laudo.Data.Cabecalho.Cidade].value}
               />
             </View>
           </View>
@@ -277,7 +290,7 @@ export function StepFiveConfirmation() {
                 selectTextOnFocus={false}
                 value={
                   constants.naturezaExame[laudo.Data.Cabecalho.NaturezaDoExame]
-                    .label
+                    .value
                 }
               />
             </View>
@@ -295,7 +308,7 @@ export function StepFiveConfirmation() {
                 value={
                   constants.orgaoSolicitanteOptions[
                     laudo.Data.Cabecalho.OrgaoSolicitante
-                  ].label
+                  ].value
                 }
               />
             </View>
@@ -358,7 +371,7 @@ export function StepFiveConfirmation() {
               editable={false}
               selectTextOnFocus={false}
               value={
-                constants.modeloOptions[laudo.Data.Veiculo.Data.Modelo].label
+                constants.modeloOptions[laudo.Data.Veiculo.Data.Modelo].value
               }
             />
           </View>
@@ -374,7 +387,7 @@ export function StepFiveConfirmation() {
               editable={false}
               selectTextOnFocus={false}
               value={
-                constants.marcaOptions[laudo.Data.Veiculo.Data.Marca].label
+                constants.marcaOptions[laudo.Data.Veiculo.Data.Marca].value
               }
             />
           </View>
@@ -416,7 +429,7 @@ export function StepFiveConfirmation() {
                 {
                   constants.stateConservation[
                     laudo.Data.Veiculo.Data.EstadoDeConservacao
-                  ].label
+                  ].value
                 }
               </Text>
             </Text>
