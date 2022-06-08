@@ -8,19 +8,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   select: {
-    height: 30,
+    height: 40,
     width: "100%",
     color: colors.text,
-    fontSize: 12,
-
+    fontSize: 18,
   },
   selectInvalid: {
     borderWidth: 1,
-    borderColor:colors.red,
+    borderColor: colors.red,
     marginVertical: 5,
     backgroundColor: colors.white,
     fontSize: 14,
-
   },
   errorMessage: {
     color: colors.red,

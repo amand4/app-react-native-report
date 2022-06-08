@@ -32,7 +32,11 @@ import styles from "./styles";
 import colors from "../../../../styles/colors";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-import { typeAdulterated, typeNumbers } from "../../../../config/constants";
+import {
+  optionsTypeTampering,
+  optionsTypeTamperingPiece,
+  optionsMethodTampering,
+} from "../../../../config/constants";
 import constants from "../../../../config/constants";
 import { selectIsValid } from "../../../../utils/validate";
 import ExpandMore from "./ExpandMore";
@@ -49,14 +53,17 @@ export function FormAdultered() {
 
   const [numeracaoDoChassi, setNumeracaoChassi] = useState({} as any);
   const [newNumber, setNewNumber] = useState("");
-  const [tipoNumeracao, setTipoNumeracao] = useState(1);
-  const [metodo, setMedodo] = useState(1);
+  const [typeTamperginPiece, setTypeTamperingPiece] = useState(1);
+  const [typeTampering, setTypeTampering] = useState(1);
+
+  const [methodTampering, setMethodTampering] = useState(1);
   const [destruicao, setDestruicao] = useState(false);
   const [images, setImage] = useState<ImageData[]>([]);
   const [validateMethodAdultered, setValidateMethodAdultered] = useState(false);
   const [validateTypeNumber, setValidateTypeNumber] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [validateTypeTampering, setValidateTypeTampering] = useState(false);
 
+  const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -68,10 +75,10 @@ export function FormAdultered() {
     Type: tipoDePeca.peca,
     Data: {
       Adulterado: {
-        Type: constants.typeAdulterated[metodo].label,
+        Type: optionsTypeTampering[typeTampering].value,
         Data: {
           DestruicaoTotal: destruicao,
-          MetodoDeDestruicao: metodo,
+          MetodoDeDestruicao: methodTampering,
           NumeracaoIdentificadora: [] as any,
         },
       },
@@ -89,34 +96,50 @@ export function FormAdultered() {
       objImage.base64 = `photo${timestamp}`;
       setImage((oldState) => [...oldState, objImage]);
     }
-  
   };
 
   const handleAddNewNumber = () => {
-    if (
-      numeracaoDoChassi !== {} &&
-      images.length > 0 &&
-      data.Data.Adulterado.Data.NumeracaoIdentificadora.length > 0
-    ) {
-    const dataNumber = {
-      Type: constants.typeNumbers[tipoNumeracao].label,
-      Data: {
-        Numero: newNumber,
-        Imagens: images,
-      },
-    };
-
-    data.Data.Adulterado.Data.NumeracaoIdentificadora.push(dataNumber);
-    setData(data);
-    // dispatch(actions.addPiece(data));
-    setNumeracaoChassi({});
-    setImage([]);
-    } else {
+    if (Object.keys(numeracaoDoChassi).length === 0) {
       Alert.alert(
         "Ops, informações inválidas!",
-        "Verique se inseriu as numerações e adicionou uma imagem!",
+        "Por favor, adicione uma numeração",
         [{ text: "OK" }]
       );
+    }
+
+    if (images.length == 0) {
+      Alert.alert(
+        "Ops, informações inválidas!",
+        "Por favor, adicione uma imagem!",
+        [{ text: "OK" }]
+      );
+    }
+    if (numeracaoDoChassi !== {} && images.length > 0) {
+      const dataNumber = {
+        Type: optionsTypeTamperingPiece[typeTamperginPiece].value,
+        Data: {
+          Numero: newNumber,
+          Imagens: images,
+        },
+      };
+      const allNumering = data.Data.Adulterado.Data.NumeracaoIdentificadora;
+      let isValid = true;
+      allNumering.map((item: any) => {
+        if (item.Type == optionsTypeTamperingPiece[typeTamperginPiece].value) {
+          Alert.alert(
+            "Ops!!",
+            "Tipo já cadastrado! Por valor, selecione outro tipo de numeração!",
+            [{ text: "OK" }]
+          );
+          isValid = false;
+        }
+      });
+      if (isValid) {
+        allNumering.push(dataNumber);
+        setData(data);
+        setNumeracaoChassi({});
+        setImage([]);
+      }
     }
   };
 
@@ -213,11 +236,13 @@ export function FormAdultered() {
 
                   <AntDesign name="checkcircle" style={styles.icone} />
                 </RectButton>
-                <ExpandMore
-                  item={item}
-                  index={index}
-                  expand={expanded}
-                ></ExpandMore>
+                {item && (
+                  <ExpandMore
+                    item={item}
+                    index={index}
+                    expand={expanded}
+                  ></ExpandMore>
+                )}
               </Swipeable>
             </View>
           )
@@ -340,22 +365,30 @@ export function FormAdultered() {
       base64: pickerResult.base64,
     };
 
-    // data.Data.Integro.Chassi.Imagens.push(pickerResult.base64);
     if (dataImage.base64) handleSave(dataImage);
-
-    // setImage((oldState) => [...oldState, dataImage]);
   };
 
   return (
     <View style={styles.fields}>
       <Select
         onValueChange={(selectedValue, index) => {
-          setMetodoDestruicao(index);
-          setMedodo(index);
+          setTypeTampering(index);
+          setValidateTypeTampering(selectIsValid(index));
+        }}
+        options={optionsTypeTampering}
+        value={typeTampering}
+        error={validateTypeTampering}
+        errorMessage={"Erro: Selecione o tipo de adulteração"}
+        testID="selec-methodo"
+      />
+
+      <Select
+        onValueChange={(selectedValue, index) => {
+          setMethodTampering(index);
           setValidateMethodAdultered(selectIsValid(index));
         }}
-        options={typeAdulterated}
-        value={metodo}
+        options={optionsMethodTampering}
+        value={methodTampering}
         error={validateMethodAdultered}
         errorMessage={"Erro: Selecione um método de destruição"}
         testID="selec-methodo"
@@ -391,13 +424,13 @@ export function FormAdultered() {
       </View>
       <Select
         onValueChange={(selectedValue, index) => {
-          setTipoNumeracao(index);
-          setValidateTypeNumber(selectIsValid(index));
+          setTypeTamperingPiece(index);
+          //  setValidateTypeNumber(selectIsValid(index));
         }}
-        options={typeNumbers}
-        value={tipoNumeracao}
+        options={optionsTypeTamperingPiece}
+        value={typeTamperginPiece}
         error={validateTypeNumber}
-        errorMessage={"Erro: Selecione o Tipo de numeração"}
+        errorMessage={"Erro: Selecione o Tipo de numeração da Peça"}
         testID="selec-typeNumber"
       />
       <View style={styles.headerFormContent}>
@@ -613,7 +646,7 @@ export function FormAdultered() {
           <Text style={styles.header}> Lista de numerações identificadas </Text>
         </View>
 
-        <RenderPieces />
+        {images && <RenderPieces />}
       </View>
       <View style={styles.header}>
         <Text style={styles.header}>

@@ -47,6 +47,7 @@ const INITIAL_STATE = {
   tipoDePeca: {
     peca: "",
   },
+  sincronizado: false,
 };
 
 const reportReducer = (state = INITIAL_STATE, action: AnyAction) => {

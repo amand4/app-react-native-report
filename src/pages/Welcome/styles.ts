@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   image: {
-    // height: Dimensions.get('window').width * 0.9,
     height: 100,
     width: 100,
   },

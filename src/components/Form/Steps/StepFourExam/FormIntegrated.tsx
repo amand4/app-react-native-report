@@ -49,7 +49,7 @@ export function FormIntegrated() {
     } else {
       Alert.alert(
         "Ops, informações inválidas!",
-        "Verique se preencheu todas as informações desta etapa corretamente.",
+        "Verifique se preencheu todas as informações desta etapa corretamente.",
         [{ text: "OK" }]
       );
     }

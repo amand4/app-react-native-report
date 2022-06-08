@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { RectButton } from "react-native-gesture-handler";
@@ -34,6 +35,9 @@ import * as FileSystem from "expo-file-system";
 
 export interface DataLitsProps extends ReportCardData {
   id: string;
+  statusDoLaudo: {
+    sincronizado: boolean;
+  };
 }
 
 interface DataPieceIntegraProps {
@@ -42,15 +46,13 @@ interface DataPieceIntegraProps {
 }
 
 export function MyReports() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const dataKey = `@laudos_user:${user.id}`;
   const [laudos, setLaudos] = useState<DataLitsProps[]>([]);
   const [conectionOn, setConectionOn] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageRecap, setImagemRecap] = useState<any>([]);
-  const [numeracaoTeste, setNumeracao] = useState<any>([]);
 
   const removeReport = async (value: number) => {
     try {
@@ -96,7 +98,7 @@ export function MyReports() {
           FileSystem.documentDirectory +
           piece.Data["Integro"].Chassi.Imagens[0];
         const contents = await FileSystem.readAsStringAsync(fileUri);
-        const testeObjt = {
+        const obj = {
           Numero: piece.Data["Integro"].Chassi.Numero,
           Imagens: [contents],
         };
@@ -132,24 +134,28 @@ export function MyReports() {
   };
 
   const toSendReport = async (report: any) => {
-    const reportWithPieces = await handleReadPiece(report);
-    const reportWithGallery = await handleReadImage(reportWithPieces);
-    const convertedReport: any = JSON.stringify(reportWithGallery);
-
-    const response: any = await api
-      .post("/reports", convertedReport, {
+    try {
+      setLoading(true);
+      const reportWithPieces = await handleReadPiece(report);
+      const reportWithGallery = await handleReadImage(reportWithPieces);
+      const convertedReport: any = JSON.stringify(reportWithGallery);
+      const response: any = await api.post("/reports", convertedReport, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-type": "Application/json",
+          Authorization: `Bearer ${token}`,
         },
-      })
-      .catch((error) => {
-        Alert.alert(
-          "Não foi possível enviar o laudo, verifique se os dados estão corretos!"
-        );
       });
-    report.LaudoVeicular.statusDoLaudo.sincronizado = true;
-    await update(dataKey, report);
+      setLoading(false);
+      report.LaudoVeicular.statusDoLaudo.sincronizado = true;
+      await update(dataKey, report);
+    } catch (error) {
+      Alert.alert(
+        "Não foi possível enviar o laudo!",
+        "Verifique se os dados estão corretos!"
+      );
+      setLoading(false);
+    }
   };
 
   const handleClick = async (report: any) => {
@@ -169,8 +175,6 @@ export function MyReports() {
   };
 
   useEffect(() => {
-    setLoading(true);
-
     async function loadReport() {
       const response = await AsyncStorage.getItem(dataKey);
 
@@ -185,7 +189,6 @@ export function MyReports() {
             arrayReportAvailable.push(item);
           }
         }
-        setLoading(false);
 
         setLaudos(storegedLaudos);
         return storegedLaudos;
@@ -195,8 +198,6 @@ export function MyReports() {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-
     async function loadReport() {
       const response = await AsyncStorage.getItem(dataKey);
 
@@ -211,7 +212,6 @@ export function MyReports() {
             arrayReportAvailable.push(item);
           }
         }
-        setLoading(false);
 
         setLaudos(storegedLaudos);
         return storegedLaudos;
@@ -221,15 +221,12 @@ export function MyReports() {
   }, [laudos]);
 
   useEffect(() => {
-    setLoading(true);
-
     async function getStatusApi() {
       try {
         const response = await api.get("/status");
         if (response.data === "sucess") setConectionOn(true);
       } catch (error) {}
     }
-    setLoading(false);
 
     getStatusApi();
   }, []);
@@ -298,44 +295,60 @@ export function MyReports() {
           <Text style={styles.subtitle}> Laudo </Text>
           <Text style={styles.subtitleStatus}> Status </Text>
         </View>
-        {laudos.length != 0 ? (
-          <FlatList
-            data={laudos}
-            renderItem={({ item: LaudoVeicular, index }) => (
-              <Swipeable
-                key={index}
-                overshootRight={false}
-                overshootLeft={false}
-                renderRightActions={() => (
-                  <Animated.View>
-                    <View>
-                      <RectButton
-                        style={styles.buttonRemove}
-                        onPress={() => handleRemove(index)}
-                      >
-                        <Feather
-                          name="trash"
-                          size={20}
-                          color={colors.white}
-                        ></Feather>
-                      </RectButton>
-                    </View>
-                  </Animated.View>
-                )}
-              >
-                <TouchableOpacity onPress={() => handleClick(LaudoVeicular)}>
-                  <ReportCard data={LaudoVeicular} />
-                </TouchableOpacity>
-              </Swipeable>
-            )}
-            keyExtractor={(item) => item.LaudoVeicular.id}
-          />
-        ) : (
+        {loading && (
+          <View style={styles.horizontal}>
+            <ActivityIndicator size="large" color={colors.blue_light} />
+            <Text style={styles.textLoading}>Enviando, aguarde...</Text>
+          </View>
+        )}
+        {!loading && (
           <View>
-            <Text style={styles.textResult}>
-              {" "}
-              Não há nenhum registro de laudos
-            </Text>
+            {laudos.length != 0 ? (
+              <FlatList
+                data={laudos}
+                renderItem={({ item: LaudoVeicular, index }) => (
+                  <Swipeable
+                    key={index}
+                    overshootRight={false}
+                    overshootLeft={false}
+                    renderRightActions={() => (
+                      <Animated.View>
+                        <View>
+                          <RectButton
+                            style={styles.buttonRemove}
+                            onPress={() => handleRemove(index)}
+                          >
+                            <Feather
+                              name="trash"
+                              size={20}
+                              color={colors.white}
+                            ></Feather>
+                          </RectButton>
+                        </View>
+                      </Animated.View>
+                    )}
+                  >
+                    {LaudoVeicular.LaudoVeicular.statusDoLaudo.sincronizado ? (
+                      <ReportCard data={LaudoVeicular} />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => handleClick(LaudoVeicular)}
+                      >
+                        <ReportCard data={LaudoVeicular} />
+                      </TouchableOpacity>
+                    )}
+                  </Swipeable>
+                )}
+                keyExtractor={(item: any) => item.LaudoVeicular.id}
+              />
+            ) : (
+              <View>
+                <Text style={styles.textResult}>
+                  {" "}
+                  Não há nenhum registro de laudos
+                </Text>
+              </View>
+            )}
           </View>
         )}
       </View>

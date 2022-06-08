@@ -51,10 +51,12 @@ export const typeAdulterated = [
     value: "Selecione um Tipo de Adulteração",
     label: "Selecione um tipo de Adulteração",
   },
-  { value: "Puncionamento", label: "Metodo de Puncionamento" },
-  { value: "Desbaste", label: "Metodo de Desbaste" },
-  { value: "Recorte", label: "Metodo de Recorte" },
-  { value: "Outro", label: "Outro" },
+  { value: "Desbaste/Regravação", label: "Desbaste/Regravação" },
+  { value: "Destruição", label: "Destruição" },
+  { value: "Transplante", label: "Transplante" },
+  { value: "Implante", label: "Implante" },
+  { value: "Regravação", label: "Regravação" },
+  { value: "2 em 1", label: "2 em 1" },
 ];
 export const naturezaExame = [
   {
@@ -79,10 +81,10 @@ export const pieces = [
   { value: "Motor", label: "Motor" },
 ];
 
-export const typeNumbers = [
+export const optionsTypeTamperingPiece = [
   {
-    value: "Selecione um Tipo de Numeração",
-    label: "Selecione um Tipo de Numeração",
+    value: "Selecione um Tipo de Numeração da Peça",
+    label: "Selecione um Tipo de Numeração da Peça",
   },
   { value: "Adulterado", label: "Adulterado" },
   { value: "Original", label: "Original" },
@@ -102,12 +104,46 @@ export const optionsStatusReports = [
   { value: "enviados", label: "Enviados" },
   { value: "aguardandoEnvio", label: "Aguardando Envio" },
 ];
+export const optionsTypeTampering = [
+  {
+    value: "Selecione um tipo de adulteração",
+    label: "Selecione um tipo de adulteração",
+  },
+  { value: "Desbaste", label: "Desbaste" },
+  { value: "Destruicao", label: "Destruicao" },
+  { value: "Implante", label: "Implante" },
+  { value: "Regravacao", label: "Regravacao" },
+  { value: "Transplante", label: "Transplante" },
+  { value: "DoisEmUm", label: "DoisEmUm" },
+];
+
+export const optionsMethodTampering = [
+  {
+    value: "Selecione o método de adulteração",
+    label: "Selecione o método de adulteração",
+  },
+  { value: "Puncionamento", label: "Puncionamento" },
+  { value: "Desbaste", label: "Desbaste" },
+  { value: "Recorte", label: "Recorte" },
+  { value: "Outro", label: "Outro" },
+];
+
+export const optionsColors = [
+  { value: "Branco", label: "Cor: Branco" },
+  { value: "Prata", label: "Cor: Prata" },
+  { value: "Cinza", label: "Cor: Cinza" },
+  { value: "Vermelho", label: "Cor: Vermelho" },
+  { value: "Marrom	", label: "Cor: Marrom" },
+  { value: "Azul", label: "Cor: Azul" },
+  { value: "Verde", label: "Cor: Verde" },
+  { value: "Amarelo", label: "Cor: Amarelo" },
+];
 
 const all = {
   modeloOptions,
   marcaOptions,
   typeAdulterated,
-  typeNumbers,
+  optionsTypeTamperingPiece,
   secao,
   typeInquerisOptions,
   orgaoSolicitanteOptions,
@@ -116,6 +152,7 @@ const all = {
   naturezaExame,
   pieces,
   stateConservation,
+  optionsColors,
 };
 
 export default all;

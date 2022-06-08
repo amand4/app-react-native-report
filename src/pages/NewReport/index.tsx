@@ -88,8 +88,8 @@ export function NewReport() {
           text: "Salvar e Sair",
           onPress: async () => {
             await report.save(dataKey, state, user, true);
-            navigation.navigate("VehicleSelect");
             dispatch(resetState(initial_state));
+            navigation.navigate("VehicleSelect");
           },
         },
       ]

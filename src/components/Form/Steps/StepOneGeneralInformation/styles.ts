@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 2,
     backgroundColor: colors.white,
-    height: 30,
+    height: 40,
   },
 
   select: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
 
   data: {
-    fontSize: 14,
+    fontSize: 18,
     color: colors.text,
     marginVertical: 5,
     paddingLeft: 10,

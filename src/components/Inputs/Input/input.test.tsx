@@ -54,8 +54,6 @@ describe('Input Component', () => {
         const onChangeText = jest.fn();
         const newValue = 'a';
         const { getByPlaceholderText } = render(
-            // MyComponent renders TextInput which has a placeholder 'Enter details'
-            // and with `onChangeText` bound to handleChangeText
             <Input  {...DEFAULT_PROPS} onChangeText={onChangeText} value={value} />
         );
 

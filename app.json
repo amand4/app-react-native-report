@@ -1,27 +1,25 @@
 {
   "expo": {
-    "name": "app-mobile-reports",
-    "slug": "app-mobile-reports",
-    "version": "1.0.0",
+    "name": "App - Laudo Tech Criminal",
+    "slug": "LTC-Laudo-Tech-Criminal",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-logo-ic.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo-policiacientifica.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "io.expo.android.collectreports"

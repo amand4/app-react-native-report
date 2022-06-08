@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     marginVertical: 10,
-    width: "50%",
+    width: "55%",
   },
   buttonAddText: {
     color: colors.white,
@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: 100,
     height: 100,
-    // resizeMode: "contain",
     marginVertical: 5,
   },
 });

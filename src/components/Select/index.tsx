@@ -15,7 +15,7 @@ interface SelectProps {
   onValueChange: (newValue: string | number, itemIndex: number) => void;
   error?: boolean;
   errorMessage?: String;
-  testID: string
+  testID: string;
 }
 
 export function Select({
@@ -25,7 +25,7 @@ export function Select({
   errorMessage,
   testID,
   onValueChange,
-}: SelectProps) {
+}: SelectProps): JSX.Element {
   return (
     <>
       {error && errorMessage && (
@@ -39,11 +39,20 @@ export function Select({
           onValueChange={(value, index) => {
             onValueChange(value, index);
           }}
-          itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
-
+          itemStyle={{
+            backgroundColor: "grey",
+            color: "blue",
+            fontFamily: "Ebrima",
+            fontSize: 15,
+          }}
         >
           {options.map((value, index) => (
-            <Picker.Item key={index} label={value.label} value={index} testID={"select-option"} />
+            <Picker.Item
+              key={index}
+              label={value.label}
+              value={index}
+              testID={"select-option"}
+            />
           ))}
         </Picker>
       </View>

@@ -5,7 +5,7 @@ import { ReportCardData } from "../../components/ReportCard";
 
 export const save = async (
   dataKey: string,
-  state: ReportCardData,
+  state: any,
   user?: any,
   edit?: boolean
 ) => {
@@ -27,12 +27,11 @@ export const save = async (
       await AsyncStorage.setItem(dataKey, JSON.stringify(currentLaudos));
     } else {
       try {
-        const teste = await AsyncStorage.setItem(
+        const updateList = await AsyncStorage.setItem(
           dataKey,
           JSON.stringify([...currentLaudos, state])
         );
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     return "sucess";

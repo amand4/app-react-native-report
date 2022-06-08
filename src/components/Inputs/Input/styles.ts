@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     borderColor: colors.outline,
     color: colors.text,
     width: "100%",
-    fontSize: 14,
+    fontSize: 18,
     marginVertical: 5,
     paddingVertical: 2,
     paddingLeft: 10,
-    height: 30,
+    height: 40,
     backgroundColor: colors.white,
   },
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingVertical: 2,
     paddingLeft: 10,
-    height: 30,
+    height: 40,
     backgroundColor: colors.white,
   },
 

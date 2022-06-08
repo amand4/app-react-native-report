@@ -43,7 +43,6 @@ export function StepFiveConfirmation() {
     return state.reportReducer;
   });
   const reportData = state.LaudoVeicular;
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -62,14 +61,14 @@ export function StepFiveConfirmation() {
 
   const handleSubmit = async () => {
     if (images.length > 0) {
-    try {
-      const response = await report.save(dataKey, state, user);
-      navigation.navigate("MyReports");
-      setCurrentStep(1);
-      dispatch(actions.resetState(initial_state));
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível cadastrar o laudo cmponete");
-    }
+      try {
+        const response = await report.save(dataKey, state, user);
+        navigation.navigate("MyReports");
+        setCurrentStep(1);
+        dispatch(actions.resetState(initial_state));
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível cadastrar o laudo cmponete");
+      }
     } else {
       Alert.alert(
         "Ops, faltou as imagens!",
@@ -453,31 +452,29 @@ export function StepFiveConfirmation() {
         <RenderPieces />
       </View>
       <View style={styles.headerFormContent}>
-        <Text style={styles.header}> Galeria </Text>
+        <Text style={styles.header}> Veículo </Text>
       </View>
       <View>
         <Text style={styles.warning}>
           {" "}
-          obs: a primeira imagem deve ser do veiculo!
+          obs: é obrigatório adicionar uma imagem do veículo!
         </Text>
       </View>
       <View style={styles.containerGalery}>
-        {images &&
-          images.map((localUri, index) => (
-            <ImageCard
-              testID="input-image"
-              index={index}
-              key={index}
-              uri={localUri.uri}
-            ></ImageCard>
-          ))}
+        {images[0] && (
+          <ImageCard
+            testID="input-image"
+            index={0}
+            uri={images[0]["uri"]}
+          ></ImageCard>
+        )}
       </View>
       <View style={styles.contentButton}>
         <TouchableOpacity
           onPress={openImagePickerAsync}
           style={styles.buttonAdd}
         >
-          <Text style={styles.buttonAddText}>Adicionar Foto</Text>
+          <Text style={styles.buttonAddText}>Adicionar Imagem</Text>
           <FontAwesome
             name="camera"
             style={styles.icone}
@@ -486,6 +483,41 @@ export function StepFiveConfirmation() {
           />
         </TouchableOpacity>
       </View>
+      <View style={styles.headerFormContent}>
+        <Text style={styles.header}> Galeria </Text>
+      </View>
+      {images[0] && (
+        <>
+          <View style={styles.containerGalery}>
+            {images &&
+              images
+                .slice(1)
+                .map((localUri, index) => (
+                  <ImageCard
+                    testID="input-image"
+                    index={index}
+                    key={index}
+                    uri={localUri.uri}
+                  ></ImageCard>
+                ))}
+          </View>
+          <View style={styles.contentButton}>
+            <TouchableOpacity
+              onPress={openImagePickerAsync}
+              style={styles.buttonAdd}
+            >
+              <Text style={styles.buttonAddText}>Adicionar mais imagens</Text>
+              <FontAwesome
+                name="camera"
+                style={styles.icone}
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+
       <View style={styles.footer}>
         <BackArrowButton
           title="Voltar"

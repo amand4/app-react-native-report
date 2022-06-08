@@ -50,6 +50,11 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   },
+
+  horizontal: {
+  
+    padding: 10
+  }
 });
 
 export default styles;

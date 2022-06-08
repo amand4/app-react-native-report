@@ -93,6 +93,17 @@ const styles = StyleSheet.create({
   buttonAcitions: {
     flex: 1,
   },
+
+  textLoading: {
+    fontSize: 15,
+    color: "#3EC5CC",
+    textAlign: "center",
+  },
+  horizontal: {
+    // flexDirection: "row",
+    //  justifyContent: "space-around",
+    padding: 40,
+  },
 });
 
 export default styles;

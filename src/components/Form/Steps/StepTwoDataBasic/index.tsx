@@ -5,7 +5,11 @@ import { RadioButton } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
-import { marcaOptions, modeloOptions } from "../../../../config/constants";
+import {
+  marcaOptions,
+  modeloOptions,
+  optionsColors,
+} from "../../../../config/constants";
 import { maskPlaca } from "../../../../utils/maks";
 
 import styles from "./styles";
@@ -42,8 +46,7 @@ export function StepTwoDataBasic() {
   const [isValid, setValid] = useState(true);
   const [validateBrand, setValidateBrand] = useState(false);
   const [validateModel, setValidateModel] = useState(false);
-  useState(false);
-
+  const [validateColor, setValidateColor] = useState(false);
   const setCurrentStep = (value: number) => {
     dispatch(actions.updateCurrentStep(value));
   };
@@ -124,15 +127,17 @@ export function StepTwoDataBasic() {
         errorMessage={"Erro: preencha o Ano/Modelo/Fab"}
       />
 
-      <Input
-        placeholder="Cor"
-        onChangeText={(value) => {
-          setColor(value);
-          dispatch(actions.addColor(value));
+      <Select
+        onValueChange={(selectedValue, index) => {
+          setColor(optionsColors[index].value);
+          dispatch(actions.addColor(optionsColors[index].value));
+          setValidateColor(selectIsValid(index));
         }}
+        options={optionsColors}
         value={color}
-        error={inputIsValid(color)}
-        errorMessage={"Erro: Digite uma Cor"}
+        error={validateColor}
+        errorMessage={"Erro: Selecione uma cor"}
+        testID="select-color"
       />
 
       <Text style={styles.inputText}>Estado de Conservação</Text>

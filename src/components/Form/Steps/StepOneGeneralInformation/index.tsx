@@ -151,7 +151,6 @@ export function StepOneGeneralInformation() {
               const repConvertNumber = Number(value);
               setRep(value);
               dispatch(actions.addRep(repConvertNumber));
-              //// setValid(inputIsValid(rep));
             }}
             testID="input-rep"
             keyboardType="numeric"
@@ -165,7 +164,6 @@ export function StepOneGeneralInformation() {
               const numberOfficeConvert = Number(value);
               setNumberOffice(value);
               dispatch(actions.addNumberOffice(numberOfficeConvert));
-              //// setValid(inputIsValid(numberOffice));
             }}
             value={String(reportDataHeader.NrdoOficio)}
             keyboardType="numeric"
@@ -180,7 +178,6 @@ export function StepOneGeneralInformation() {
             onChangeText={(value) => {
               setInitiated(value);
               dispatch(actions.addInitiated(value));
-              // setValid(inputIsValid(initiated));
             }}
             value={reportDataHeader.Indiciado}
           />
@@ -205,7 +202,6 @@ export function StepOneGeneralInformation() {
             onChangeText={(value) => {
               setNumberInquiry(value);
               dispatch(actions.addNumberInquiry(Number(value)));
-              // setValid(inputIsValid(NumberInquiry));
             }}
             value={String(reportDataHeader.NrdoInquerito)}
             keyboardType="numeric"
@@ -280,13 +276,17 @@ export function StepOneGeneralInformation() {
               style={styles.button}
               onPress={showSolicitanteDatepicker}
             >
-              {typeof reportDataHeader.DataDeSolicitacao === "string" ? (
+              {reportDataHeader.DataDeSolicitacao instanceof Date ? (
                 <Text style={styles.data}>
-                  {formatEditDate(reportDataHeader.DataDeSolicitacao)}
+                  {`Data Solicitação: ${formatNewDate(
+                    reportDataHeader.DataDeSolicitacao
+                  )}`}
                 </Text>
               ) : (
                 <Text style={styles.data}>
-                  {formatNewDate(reportDataHeader.DataDeSolicitacao)}
+                  {`Data Solicitação: ${formatNewDate(
+                    reportDataHeader.DataDeSolicitacao
+                  )}`}
                 </Text>
               )}
             </RectButton>
@@ -297,7 +297,9 @@ export function StepOneGeneralInformation() {
               onPress={showDesignacaoDatepicker}
             >
               <Text style={styles.data}>
-                {formatNewDate(reportDataHeader.DataDeDesignacao)}
+                {`Data Designação: ${formatNewDate(
+                  reportDataHeader.DataDeDesignacao
+                )}`}
               </Text>
             </RectButton>
           </View>

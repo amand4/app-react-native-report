@@ -4,6 +4,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
 } from "react";
 import { api } from "../services/api";
 import { AxiosResponse } from "axios";
@@ -38,13 +39,16 @@ interface IAuthContextData {
   signed: boolean;
   user: User;
   loading: boolean;
-  signIn(name: string, password: string): Promise<AxiosResponse<Response>>;
+  token: string;
+  signIn(name: string, password: string): any;
   signOut(): void;
 }
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User);
+  const [token, setToken] = useState("");
+
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
@@ -53,7 +57,6 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     async function loadStoragedData() {
-      //trocar por multget
       const storagedUser = await useAsyncStorage.getItem(userStorageKey);
 
       const storagedToken = await useAsyncStorage.getItem("@AppAuth:token");
@@ -69,15 +72,17 @@ function AuthProvider({ children }: AuthProviderProps) {
     loadStoragedData();
   }, []);
 
-  async function signIn(name: string, password: string): Promise<void> {
+  // async function signIn(name: string, password: string): Promise<void> {
+  const signIn = useCallback(async (name: string, password: string) => {
     try {
-      // trocar pelos parametro da funçao, apenas testes
       const response = await api.post<Response>("/login", {
         name,
         password,
       });
       if (response.data.user) {
+        const { token } = response.data;
         setUser(response.data.user);
+        setToken(token);
         dispatch(actions.addExpert(Number(response.data.user.id)));
 
         api.defaults.headers["Authorization"] = `Bearer ${response.data.token}`;
@@ -96,7 +101,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         "Usário ou senha inválida! Tente novamente com outras credênciais"
       );
     }
-  }
+  }, []);
 
   async function signOut() {
     setUser({} as User);
@@ -105,7 +110,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, loading, signIn, signOut }}
+      value={{ signed: !!user, user, loading, token, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>

@@ -7,33 +7,33 @@ import styles from "./styles";
 
 export interface ReportCardData {
   LaudoVeicular: {
-    id: string;
+    id: string | Uint8Array;
     Type: string;
     Data: {
       Cabecalho: {
-        Rep: number;
-        NrdoOficio: number;
+        Rep: string;
+        NrdoOficio: string;
         Indiciado: string;
-        TipoDeInquerito: string;
-        NrdoInquerito: number;
-        Secao: string;
-        Diretor: string;
-        Cidade: string;
-        Perito: string;
-        NaturezaDoExame: string;
-        OrgaoSolicitante: string;
-        DataDeDesignacao: string;
-        DataDeSolicitacao: string;
+        TipoDeInquerito: number;
+        NrdoInquerito: string;
+        Secao: number;
+        Diretor: number;
+        Cidade: number;
+        Perito: number;
+        NaturezaDoExame: number;
+        OrgaoSolicitante: number;
+        DataDeDesignacao: Date;
+        DataDeSolicitacao: Date;
       };
       Veiculo: {
         Type: string;
         Data: {
           Placa: string;
-          Modelo: string;
-          Marca: string;
+          Modelo: number;
+          Marca: number;
           AnoModeloFab: string;
           Cor: string;
-          EstadoDeConservacao: string;
+          EstadoDeConservacao: number;
         };
         Pieces: [
           {
