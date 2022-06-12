@@ -11,7 +11,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { RectButton } from "react-native-gesture-handler";
 import { useAuth } from "../../../../hooks/auth";
 import { useNavigation } from "@react-navigation/native";
-
 import styles from "./styles";
 
 import { Input } from "../../../Inputs/Input";

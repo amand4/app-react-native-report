@@ -177,7 +177,7 @@ export function FormAdultered() {
 
   const removeNumberChassi = (numero: number) => {
     const filterd = data.Data.Adulterado.Data.NumeracaoIdentificadora.filter(
-      (obj: any) => obj["Data"].Numero != numero
+      (obj: any, index: number) => index != numero
     );
     const newChassiFiltered = {
       ...data,
@@ -214,7 +214,7 @@ export function FormAdultered() {
                     <View>
                       <RectButton
                         style={styles.buttonRemove}
-                        onPress={() => removeNumberChassi(item["Data"].Numero)}
+                        onPress={() => removeNumberChassi(index)}
                       >
                         <Feather
                           name="trash"
@@ -352,7 +352,7 @@ export function FormAdultered() {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [3, 3],
       quality: 1,
       base64: true,

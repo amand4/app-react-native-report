@@ -4,6 +4,10 @@ import { RadioButton } from "react-native-paper";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { TextInputMask } from "react-native-masked-text";
+import { MaskedTextInput } from "react-native-mask-text";
+
+import MaskInput from "react-native-mask-input";
 
 import {
   marcaOptions,
@@ -77,17 +81,15 @@ export function StepTwoDataBasic() {
 
   return (
     <View style={styles.fields}>
-      <Input
+      <MaskedTextInput
         placeholder="Placa *"
-        value={plate}
-        error={inputIsValid(plate)}
-        errorMessage={"Erro: Preencha a Placa"}
-        onChangeText={(value) => {
-          const placaFormated = value;
-          setPlate(value);
-          dispatch(actions.addPlate(value));
+        mask="AAA-9999"
+        onChangeText={(text) => {
+          const plateTransform = text.toLocaleUpperCase();
+          setPlate(plateTransform);
+          dispatch(actions.addPlate(plateTransform));
         }}
-        maxLength={7}
+        style={styles.input}
       />
 
       <Select

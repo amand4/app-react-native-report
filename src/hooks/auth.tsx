@@ -24,15 +24,8 @@ interface User {
   id: string;
   name: string;
   password: string;
-}
-interface Tpo {
-  id: string;
-  name: string;
-  password: string;
-}
-interface CallbackType {
-  onError: (value: string) => void;
-  onSuccess: (value: Record<string, any>) => void;
+  director_id: number;
+  section_id: number;
 }
 
 interface IAuthContextData {
@@ -72,7 +65,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     loadStoragedData();
   }, []);
 
-  // async function signIn(name: string, password: string): Promise<void> {
   const signIn = useCallback(async (name: string, password: string) => {
     try {
       const response = await api.post<Response>("/login", {

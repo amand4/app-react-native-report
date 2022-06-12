@@ -32,35 +32,37 @@ export function VehicleSelect() {
   const [myReports, setMyReports] = useState<any[]>([]);
   const [vehicleChoice, setVehicleChoie] = useState<any>("Moto");
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
   const handleStart = async (value: string) => {
+    setLoading(true);
+
     const dataKey = `@laudos_user:${user.id}`;
     const data = await AsyncStorage.getItem(dataKey);
     let reportsFiltered;
+
     if (data) {
       const reportsStoraged = JSON.parse(data);
       reportsFiltered = reportsStoraged.filter(function (currentElement: any) {
-        if (
-          currentElement.LaudoVeicular.statusDoLaudo.completo == false &&
-          currentElement.LaudoVeicular.statusDoLaudo.oculto == false
-        ) {
+        if (currentElement.LaudoVeicular.statusDoLaudo.completo == false) {
           return true;
         }
       });
-
       setMyReports(reportsFiltered);
+      setLoading(false);
     }
 
     setVehicleChoie(value);
     dispatch(actions.addTypeVehicle(vehicleChoice));
     if (myReports.length > 0) {
       return setModalVisible(true);
-    }
-    setLoading(false);
+      setLoading(false);
+    } else {
+      setLoading(false);
 
-    return navigation.navigate("NewReport");
+      return navigation.navigate("NewReport");
+    }
   };
   const handleViewReports = () => {
     navigation.navigate("MyReports");
@@ -147,9 +149,7 @@ export function VehicleSelect() {
         <View>
           <Text style={styles.title}> Escolha um veículo</Text>
         </View>
-        <View style={styles.containerModal}>
-          <ModalReport />
-        </View>
+        <View style={styles.containerModal}>{!loading && <ModalReport />}</View>
 
         <View style={styles.vehicles}>
           <View style={styles.cards}>
@@ -161,7 +161,6 @@ export function VehicleSelect() {
                 available={available}
                 onPress={() => {
                   setVehicleChoie(title);
-
                   handleStart(title);
                 }}
               />

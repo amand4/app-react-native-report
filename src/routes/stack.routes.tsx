@@ -25,7 +25,6 @@ const AppRoutes: React.FC = () => (
       },
     }}
   >
-    {/* <stackRoutes.Screen name="Login" component={Login} /> */}
 
     <stackRoutes.Screen name="VehicleSelect" component={VehicleSelect} />
     <stackRoutes.Screen name="Welcome" component={Welcome} />

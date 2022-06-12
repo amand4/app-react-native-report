@@ -55,7 +55,14 @@ export function NewReport() {
           onPress: () => null,
           style: "cancel",
         },
-        { text: "Sim", onPress: () => navigation.navigate("VehicleSelect") },
+        {
+          text: "Sim",
+          onPress: () => {
+            dispatch(resetState(initial_state));
+
+            navigation.navigate("VehicleSelect");
+          },
+        },
       ]);
       return true;
     };

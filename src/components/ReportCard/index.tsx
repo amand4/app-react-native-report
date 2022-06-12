@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
+import constants from "../../config/constants";
 
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
@@ -112,13 +113,17 @@ export function ReportCard({ data, ...rest }: ReportCardProps): JSX.Element {
         <Text style={styles.info}>
           Cidade:
           <Text style={styles.description}>
-            {data.LaudoVeicular.Data.Cabecalho.Cidade}
+            {constants.cities[data.LaudoVeicular.Data.Cabecalho.Cidade].value}
           </Text>
         </Text>
         <Text style={styles.info}>
           Órgão Solicitante:
           <Text style={styles.description}>
-            {data.LaudoVeicular.Data.Cabecalho.OrgaoSolicitante}
+            {
+              constants.orgaoSolicitanteOptions[
+                data.LaudoVeicular.Data.Cabecalho.OrgaoSolicitante
+              ].value
+            }
           </Text>
         </Text>
       </View>

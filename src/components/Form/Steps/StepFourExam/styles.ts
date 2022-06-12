@@ -65,10 +65,12 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   thumbnail: {
-    width: 80,
-    height: 80,
+    width: 200,
+    height: 150,
     resizeMode: "contain",
     marginVertical: 10,
+    borderWidth: 2,
+    borderColor: colors.blue_light,
   },
   icone: {
     fontSize: 20,

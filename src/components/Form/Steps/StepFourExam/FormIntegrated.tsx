@@ -36,8 +36,11 @@ export function FormIntegrated() {
       const fileUri = FileSystem.documentDirectory + `photo${timestamp}`;
       const options = { encoding: FileSystem.EncodingType.UTF8 };
       await FileSystem.writeAsStringAsync(fileUri, objImage.base64);
-      data.Data.Integro.Chassi.Imagens.push(`photo${timestamp}`);
+      objImage.base64 = `photo${timestamp}`;
       setImage((oldState) => [...oldState, objImage]);
+      data.Data.Integro.Chassi.Imagens[0] =
+        objImage.base64 = `photo${timestamp}`;
+      setData(data);
     }
   };
 
@@ -181,8 +184,8 @@ export function FormIntegrated() {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 3],
+      allowsEditing: false,
+      aspect: [5, 8],
       quality: 1,
       base64: true,
     });

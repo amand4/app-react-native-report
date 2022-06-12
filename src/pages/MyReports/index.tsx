@@ -21,12 +21,10 @@ import { ReportCard, ReportCardData } from "../../components/ReportCard";
 import { Header } from "../../components/Header";
 import { BackArrowButton } from "../../components/Buttons/BackArrowButton";
 
-import { Select } from "../../../src/components/Select";
-
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/auth";
 import colors from "../../styles/colors";
-import { update } from "../../services/database/storage";
+import { updateStatus } from "../../services/database/storage";
 import { SelectString } from "../../components/Select/SelectString";
 import { optionsStatusReports, pieces } from "../../config/constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -139,6 +137,7 @@ export function MyReports() {
       const reportWithPieces = await handleReadPiece(report);
       const reportWithGallery = await handleReadImage(reportWithPieces);
       const convertedReport: any = JSON.stringify(reportWithGallery);
+
       const response: any = await api.post("/reports", convertedReport, {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -147,14 +146,22 @@ export function MyReports() {
         },
       });
       setLoading(false);
-      report.LaudoVeicular.statusDoLaudo.sincronizado = true;
-      await update(dataKey, report);
-    } catch (error) {
-      Alert.alert(
-        "Não foi possível enviar o laudo!",
-        "Verifique se os dados estão corretos!"
-      );
-      setLoading(false);
+
+      await updateStatus(dataKey, report.LaudoVeicular.id);
+    } catch (error: any) {
+      if (error.response.status) {
+        Alert.alert(
+          "Ops, autênticação inválida!",
+          "Para reenviar o laudo, por favor deslogue do aplicativo e logue novamente!"
+        );
+        setLoading(false);
+      } else {
+        Alert.alert(
+          "Não foi possível enviar o laudo!",
+          "Verifique se os dados estão corretos!"
+        );
+        setLoading(false);
+      }
     }
   };
 
@@ -183,13 +190,6 @@ export function MyReports() {
           ? JSON.parse(response)
           : [];
 
-        let arrayReportAvailable = [];
-        for (const item of storegedLaudos) {
-          if (item.LaudoVeicular.statusDoLaudo.oculto == false) {
-            arrayReportAvailable.push(item);
-          }
-        }
-
         setLaudos(storegedLaudos);
         return storegedLaudos;
       }
@@ -205,13 +205,6 @@ export function MyReports() {
         const storegedLaudos: DataLitsProps[] = response
           ? JSON.parse(response)
           : [];
-
-        let arrayReportAvailable = [];
-        for (const item of storegedLaudos) {
-          if (item.LaudoVeicular.statusDoLaudo.oculto == false) {
-            arrayReportAvailable.push(item);
-          }
-        }
 
         setLaudos(storegedLaudos);
         return storegedLaudos;

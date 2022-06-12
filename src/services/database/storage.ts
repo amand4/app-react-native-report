@@ -64,6 +64,26 @@ export const update = async (dataKey: string, state: any) => {
     Alert.alert("Erro", "Não foi possível atualizar o laudo");
   }
 };
+export const updateStatus = async (dataKey: string, idLaudo: string) => {
+  try {
+    const laudos = await AsyncStorage.getItem(dataKey);
+    const currentLaudos = laudos ? JSON.parse(laudos) : [];
+    const newCurrentLaudos = currentLaudos.map((element: any) => {
+      if (element.LaudoVeicular.id == idLaudo) {
+        element.LaudoVeicular.statusDoLaudo.sincronizado = true;
+        return element;
+      } else {
+        return element;
+      }
+    });
+
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newCurrentLaudos));
+
+    return "sucess";
+  } catch (error) {
+    Alert.alert("Erro", "Não foi possível atualizar o laudo");
+  }
+};
 const all = {
   save,
 };

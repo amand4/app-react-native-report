@@ -1,14 +1,18 @@
 import React from "react";
 import { Image, View, TouchableOpacity, Alert } from "react-native";
 import { useAuth } from "../../hooks/auth";
+import { useDispatch } from "react-redux";
 
 import ImageLogo from "../../assets/logo-policiacientifica.png";
+import { resetState } from "../../actions/todo";
 
 import styles from "./styles";
 import { AntDesign } from "@expo/vector-icons";
+import { initial_state } from "../../utils/initialState";
 
 export function Header() {
   const { signOut } = useAuth();
+  const dispatch = useDispatch();
 
   const handleMenu = () => {
     Alert.alert(
@@ -18,7 +22,20 @@ export function Header() {
   };
 
   async function handleSignOut() {
-    await signOut();
+    Alert.alert("Atenção", `Tem certeza que deseja sair?`, [
+      {
+        text: "Não 🙏",
+        style: "cancel",
+      },
+      {
+        text: "Sim 😥",
+        onPress: async () => {
+          dispatch(resetState(initial_state));
+
+          await signOut();
+        },
+      },
+    ]);
   }
   return (
     <View style={styles.container} testID="header-test">

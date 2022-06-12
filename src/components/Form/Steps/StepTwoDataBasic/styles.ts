@@ -47,6 +47,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 10,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: colors.outline,
+    color: colors.text,
+    width: "100%",
+    fontSize: 18,
+    marginVertical: 5,
+    paddingVertical: 2,
+    paddingLeft: 10,
+    height: 40,
+    backgroundColor: colors.white,
+  },
 });
 
 export default styles;

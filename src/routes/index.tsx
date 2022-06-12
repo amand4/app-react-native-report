@@ -10,7 +10,6 @@ const Routes: React.FC = () => {
 
   return (
     <NavigationContainer>
-      {/* objeto = {} esta retorando true, checar o motivo */}
       {user.name ? <StackRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
