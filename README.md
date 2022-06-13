@@ -1,64 +1,44 @@
-# mobile-reactnative-report
+## 💻 Sobre
 
-## 💻 Project proposal
+Aplicativo para coleta de laudos períciais veiculares.
 
-Application development for data collection of vehicle tests.
+## 🧪 Tecnologias
 
-## To know more:
-
-- Notion - GERAL: [https://www.notion.so/App-Vehicle-report-generator-ff94180d84af415c842e89d29c2784be](https://www.notion.so/App-Vehicle-report-generator-ff94180d84af415c842e89d29c2784be)
-- Mapa Mental: [https://www.mindmeister.com/1462695947?t=8NurUuLG0G](https://www.mindmeister.com/1462695947?t=8NurUuLG0G)
-- Notion - React Native: [https://www.notion.so/React-Native-6c5cb86bb42c408d92eea124e904ab98](https://www.notion.so/React-Native-6c5cb86bb42c408d92eea124e904ab98)
-- Figma: [https://www.figma.com/file/qICB9WdU0KzVvexNP1yC9y/App-Interface?node-id=107%3A86](https://www.figma.com/file/qICB9WdU0KzVvexNP1yC9y/App-Interface?node-id=107%3A86)
-
-- Api with Node.js: [https://github.com/amand4/api-nodejs-report ](https://github.com/amand4/api-nodejs-report)
-
-## 🧪 Technologies
-
-This project was developed using the following technologies:
+Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 - [React Native](https://reactnative.dev/)
 - [Expo](https://expo.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 
+## Como usar
+
+- ### **Pré-requisitos**
+
+  - É **necessário** possuir o **[Node.js](https://nodejs.org/en/)** instalado na máquina
+  - Também, é **preciso** ter um gerenciador de pacotes seja o **[NPM](https://www.npmjs.com/)** ou **[Yarn](https://yarnpkg.com/)**.
+  - Por fim, é **essencial** ter o **[Expo](https://expo.io/)** instalado de forma global na máquina
+
 <h2>
-  📌 To have a copy of the project
+  📌 Para ter uma cópia do projeto
 </h2>
 
-### Clone the repository to have a copy of the code on your machine
+### Clone o repositório para ter uma cópia do código em sua máquina
 
 ```bash
-$ git clone https://github.com/amand4/mobile-reactnative-report && cd mobile-reactnative-report
+$ git clone https://github.com/amand4/app-react-native-report && cd app-react-native-report
 ```
 
-### Load dependencies
+### Baixar dependências
 
 ```bash
-$ yarn install
+$ yarn
 ```
 
-## Run the project
+## Rodar o projeto
 
 ```bash
 $ expo start
 ```
-
-<!--
-After doing this, the metro bundler will open in your browser. Some options for running the Application:
-
-#### 1 - Android emulator
-
-On the metro bundler page, click on "Run on Android device / emulator" and wait to load. Keep in mind that it is necessary to have gone through the process of installing the android sdk, etc.
-
-#### 2 - IOS Emulator
-
-On the metro bundler page, click on "Run on iOS simulator" and wait to load.
-
-/usr/local/android-studio/bin
-
-
-sudo ./studio.sh
- -->
 
 ## Login
 

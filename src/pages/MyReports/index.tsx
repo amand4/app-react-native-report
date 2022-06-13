@@ -38,18 +38,13 @@ export interface DataLitsProps extends ReportCardData {
   };
 }
 
-interface DataPieceIntegraProps {
-  Type: "";
-  Data: any;
-}
-
 export function MyReports() {
   const { user, token } = useAuth();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const dataKey = `@laudos_user:${user.id}`;
   const [laudos, setLaudos] = useState<DataLitsProps[]>([]);
-  const [conectionOn, setConectionOn] = useState(false);
+  const [conectionOn, setConectionOn] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const removeReport = async (value: number) => {
@@ -217,23 +212,21 @@ export function MyReports() {
     async function getStatusApi() {
       try {
         const response = await api.get("/status");
-        if (response.data === "sucess") setConectionOn(true);
-      } catch (error) {}
+        if (response.data == "sucess") {
+          setConectionOn(true);
+        } else {
+          setConectionOn(false);
+        }
+      } catch (error) {
+        setConectionOn(false);
+      }
     }
 
     getStatusApi();
-  }, []);
-
-  useEffect(() => {
-    myFunction();
     return () => {
       setConectionOn(false);
     };
   }, []);
-
-  const myFunction = () => {
-    setConectionOn(true);
-  };
 
   return (
     <View style={styles.container}>
@@ -278,7 +271,7 @@ export function MyReports() {
               </Text>
               <Text style={styles.containerMessageConectionText}>
                 {" "}
-                Conecte a rede 3G ou Wifi.{" "}
+                Conecte a rede Wifi.{" "}
               </Text>
             </View>
           </View>
