@@ -39,8 +39,3 @@ $ yarn
 ```bash
 $ expo start
 ```
-
-## Login
-
-usuário: dev
-senha: 123456
